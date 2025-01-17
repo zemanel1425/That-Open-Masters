@@ -1,0 +1,26 @@
+{
+  "name": "m2-c3",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "vite": "^6.0.6"
+  },
+  "dependencies": {
+    "esbuild": "^0.24.2",
+    "nanoid": "^3.3.8",
+    "picocolors": "^1.1.1",
+    "postcss": "^8.4.49",
+    "rollup": "^4.29.1",
+    "source-map-js": "^1.2.1",
+    "typescript": "^5.7.2",
+    "uuid": "^11.0.4"
+  },
+  "description": ""
+}

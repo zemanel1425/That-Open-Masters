@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside id="sidebar">
+		<img id="company-logo" src="./Assets/company-logo.svg" alt="Construction Company">
+    <ul id="nav-buttons">
+			<li id="project-btn"><span class="material-icons-round">apartment</span>Projects</li>
+      <li><span class="material-icons-round">people</span>User</li>
+    </ul>
+  </aside>
+	<dialog class="popup" role="alert" id="err-popup" >
+		<div style="border-radius: 10px; padding: 10px;">
+			<span>
+				<button id="close-popup-btn" type="button" 
+								style="height: 10px; font-size: xx-small; padding: 10px; float: right; margin-right: 10px;">OK</button>
+			</span>
+			<h5 id="msg-title" style="padding: 0 10px;">Error</h5>
+		</div>
+		<p id="error-container" class="error-message" style="padding: 0 20px 15px 20px; text-align: justify;"></p>				
+	</dialog>
+  <main id="content">
+		<div class="page" id="projects-page" style="display: flex;">
+			<dialog id="new-project-modal">
+				<form id="new-project-form">
+					<h2>New Project</h2>	
+					<div class="input-list">
+						<div class="form-field-container">
+							<label><span class="material-icons-round">apartment</span>Name</label>
+							<input name="name" type="text" placeholder="Enter project name">
+							<p style="color: grey; font-style: italic;">TIP: Give it a small name.</p>
+						</div>
+						<div class="form-field-container">
+							<label><span class="material-icons-round">notes</span>Description</label>
+							<textarea name="description" cols="30" rows="5" placeholder="Provide a project summary description"></textarea>
+						</div>
+						<div class="form-field-container">
+							<label><span class="material-icons-round">account_circle</span>Role</label>
+							<select name="userRole">
+								<option>Architect</option>
+								<option>Engineer</option>
+								<option>Developer</option>
+							</select>
+						</div>
+						<div class="form-field-container">
+							<label><span class="material-icons-round">not_listed_location</span>Status</label>
+							<select name="status">
+								<option>Pending</option>
+								<option>Active</option>
+								<option>Finished</option>
+							</select>
+						</div>
+						<div class="form-field-container">
+							<label for="finishDate">
+								<span class="material-icons-round">calendar_month</span>Finish Date</label>
+								<input name="finishDate" type="date" id="finishDate"></input>			
+							</div>					
+							<div style="display: flex; margin: 10px 0px 10px auto; column-gap: 10px;">
+								<button id="cancelbutton" type="button" style="background-color: transparent;">Cancel</button>
+								<button type="submit" style="background-color: #128944;">Save</button>
+							</div>
+						</div>
+					</form>
+			</dialog>
+				<header>
+					<h2>Projects</h2>
+					<div style="display: flex; align-items: center;column-gap: 25px;">
+						<span id="import-projects-btn" class="material-icons-round action-icon">file_upload</span>
+						<span id="export-projects-btn" class="material-icons-round action-icon">file_download</span>
+						<button id="btn-new-project" type="button"><span class="material-icons-round">add</span>New Project</button>					
+					</div>
+				</header>
+				<div id="projects-list">									
+				</div>			
+		</div>
+		<div class="page" id="project-details" style="display: none;">
+			<header>
+				<div>
+					<h2>Hospital Center</h2>
+					<p style="color: #969696;">Central Hospital Lat Phrao</p>
+				</div>
+			</header>
+			<div class="main-page-content">
+				<div id="card-container" style="display: flex; flex-direction: column; row-gap: 30px; width: 475px">
+					<div id="project-card" class="dashboard-card" style="padding: 30px 0;">
+						<div style="display: flex; justify-content: space-between; align-items: center; padding: 0px 30px; margin-bottom: 30px">
+							<p style="font-size: 20px; aspect-ratio: 1; background-color: orange; border-radius: 100%; padding: 12px;">HC</p>
+							<button class="btn-secondary"><p style="width: 100%;">Edit</p></button>
+						</div>
+						<div style="padding: 0px 30px;">
+							<div>
+								<h5>HOSPITAL CENTER</h5>
+								<p>Central Hospital Lat Phrao</p>
+							</div>
+							<div style="display: flex;column-gap: 30px; padding: 30px 0px; justify-content: space-between;">
+								<div>
+									<p style="color: #969696; font-size: var(--font-sm);">Status</p>
+									<p>Active</p>
+								</div>
+								<div>
+									<p style="color:#969696; font-size: var(--font-sm);">Cost</p>
+									<p>$2'000.000</p>
+								</div>
+								<div>
+									<p style="color: grey; font-size: var(--font-sm);">Role</p>
+									<p>Engineer</p>
+								</div>
+								<div>
+									<p style="color: #969696; font-size: var(--font-sm);">Finish Date</p>
+									<p>2022-12-31</p>
+								</div>
+							</div>
+							<div>
+								<div style="background-color: #404040; border-radius: 9999px; overflow: auto">
+									<div style="width: 80%; padding: 4px 0; background-color: #128944; text-align: center;">80%</div>
+								</div>
+							</div>							
+						</div>
+					</div>
+					<div id="todo-card" class="dashboard-card" style="flex-grow: 1;">
+						<div style="padding: 20px 30px; display: flex; align-items: center; justify-content: space-between;">
+							<h4 style="width: 20%;">To-Do</h4>
+							<div style="display: flex; align-items: center;justify-content: end; column-gap: 8px;">
+								<button class="btn-icon"><span class="material-icons-round">search</span></button>
+								<input type="text" placeholder="Search To-Do Task by Name" style="width: 220px;">
+								<button class="btn-icon"><span class="material-icons-round">add</span></button>
+							</div>
+						</div>
+						<div style="display: flex; flex-direction: column; padding: 10px 30px; row-gap: 20px;">
+							<div class="todo-card">
+								<div style="display: flex; justify-content: space-between; align-items: center;">
+									<div style="display: flex; align-items: center; column-gap: 15px;">
+										<span class="material-icons-round" style="padding: 10px; background-color: #969696;border-radius: 10px;">construction</span>
+										<p style="word-break: break-all;">This is a Task to be completed by:</p>
+									</div>
+									<p style="text-wrap: nowrap; margin-left: 10px;">Wed, 26/Dec</data></p>
+								</div>
+							</div>
+							<div class="todo-card">
+								<div style="display: flex; justify-content: space-between; align-items: center;">
+									<div style="display: flex; align-items: center; column-gap: 15px;">
+										<span class="material-icons-round" style="padding: 10px; background-color: #969696;border-radius: 10px;">construction</span>
+										<p style="word-break: break-all;">completed by:</p>
+									</div>
+									<p style="text-wrap: nowrap; margin-left: 10px;">Wed, 26/Dec</data></p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="viewer-container" style="display:flex; flex-direction: column;	row-gap: 30px; border: 5px solid var(--background-100); width: 100%">MODEL VIEWER SPACE
+				</div>
+			</div>
+		</div>
+	</main>
+	<script type="module" src="./src/index.ts"></script>
+	<!-- type module indicates that the project is using various files or es6 modules -->
+	<!-- src indicates the file this html references to in order to perform dinamic operations -->
+</body>
+</html>

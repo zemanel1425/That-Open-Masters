@@ -1,0 +1,55 @@
+module 2
+
+-------------------------------------------------------------------------------------------
+
+	lesson 3.1
+		create several js files to ease coding
+		combine all together in a single JS by bundling, using bundlers or package libraries
+		to get to use other packages in our code we need to install npm package manager
+			download and install latest from nodejs.org
+			in vscode terminal type npm -v to check npm version
+			in vscode terminal type npm -ini -y to initialise npm
+				this will create a package.json file in the project dir tree
+		vite is a frontend tooling package, it has a plug n play bundler.
+		the most commom use of vite is to run npm create vite@latest
+		as the install is half way trough the project run npm i vite --save-dev
+			the package.json file received a dependency
+				there are two types of dependencies:
+					dependencies-included in the bundle as the app depends on it
+					development dependencies-not included in the bundle. just used to develop		
+			a new folder node_modules is created
+				do not change the folder, althoug it can be deleted and recreated by run npm i
+		update the script to "dev": "vite"
+		npm run dev starts the local server to test the app
+	
+	---------------------------------------------------------------------------------------
+
+	lesson 3.3
+		dynamically typed programming is when the type of a variable is determined at 
+		runtime rather than at compile time
+		statically typed programming is when the type of a variable is enforced.
+		javascript does not allow for that so we need to use typescript
+		use typescript
+			install typescript
+				in the terminal stop vite
+				run npm i typescript --save-dev
+			change .js file extension to .ts
+			update in html file
+		javascript needs to be configured before using it but vite does that in the background
+		browsers don't understand typescript so it needs to be compiled vite does that in background
+		changing the file extension will highlight errors that need to be fixed
+
+---------------------------------------------------------------------------------------
+
+	lesson 3.6
+		set up button types in the html document for default behaviour
+
+---------------------------------------------------------------------------------------
+
+lesson 3.7
+get uuidv4 installed in the console run
+	npm i uuid
+this is not a development dependency
+import it in the project class file as uuidv4 name
+	create an id property as string
+	assign the value of uuidv4() to this instance of project
