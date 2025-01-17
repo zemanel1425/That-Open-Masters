@@ -1,5 +1,6 @@
 //THE PURPOSE OF THIS FILE IS TO INTERACT WITH THE DOM AND TO HANDLE EVENTS//
 //-------see reference file M2 L3.1--------//
+//-------creating a git comment--------//
 import { IProject, Project, ProjectStatus, UserRole } from "./class/Project"
 import { ProjectsManager } from "./class/ProjectsManager"
 
