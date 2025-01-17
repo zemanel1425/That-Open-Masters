@@ -2,6 +2,7 @@
 //---------------------see reference file M2 L3.1-------------------------//
 import { UUIDTypes } from "uuid";
 import { IProject, Project } from "./Project";
+import { Input } from "postcss";
 
 /* create class ProjectsManager
 //----------------------------------------------------------------------------//
@@ -79,6 +80,7 @@ define newproject method ensure argument is same data type as IProject
 			if (!projectsPage || !detailsPage) {return}
 			projectsPage.style.display = "none"
 			detailsPage.style.display = "flex"
+			this.setDetailsPage(project)
 		})
     this.ui.append(project.ui)
     this.list.push(project)
@@ -91,6 +93,26 @@ define newproject method ensure argument is same data type as IProject
 /// - || or syntax 
 */
 
+private setDetailsPage(project: Project) {
+	const detailsPage = document.getElementById("project-details")
+	if(!detailsPage) {return}
+	const name = detailsPage.querySelector("[data-project-info='name']")
+	if (name) {name.textContent = project.name}
+	const description = detailsPage.querySelector("[data-project-info='description']")
+	if (description) {description.textContent = project.description}
+	const cardName = detailsPage.querySelector("[data-project-info='card-name']")
+	if (cardName) {cardName.textContent = project.name}
+	const cardDescription = detailsPage.querySelector("[data-project-info='card-description']")
+	if (cardDescription) {cardDescription.textContent = project.description}
+	const cardStatus = detailsPage.querySelector("[data-project-info='card-status']")
+	if (cardStatus) {cardStatus.textContent = project.status}
+	const cardCost = detailsPage.querySelector("[data-project-info='card-cost']")
+  if (cardCost) {cardCost.textContent = project.cost.toString()}
+	const cardRole = detailsPage.querySelector("[data-project-info='card-role']")
+  if (cardRole) {cardRole.textContent = project.userRole}
+	const cardDate = detailsPage.querySelector("[data-project-info='card-date']")
+  if (cardDate) {cardDate.textContent = new Date (project.finishDate).toDateString()}
+}
 /* create getProject method
 //-------------------------------------------------------------------------------------//
 	create getProject and ensure argument is of data type string
