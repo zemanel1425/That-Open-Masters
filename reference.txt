@@ -53,3 +53,76 @@ this is not a development dependency
 import it in the project class file as uuidv4 name
 	create an id property as string
 	assign the value of uuidv4() to this instance of project
+
+---------------------------------------------------------------------------------------
+
+lesson 4 git commands
+download and install git to windows from website
+terminal commands:
+>> git init - to initialise git in the project
+>> git add . - to add files to the branch
+>> git reset - take git to original configuration, no files.
+>> create .ignore file - file with definition of ignored files to branch/commit
+	>> check log book lesson "introducing to git" for detail files
+>> stage files to commit in the ui "+" or terminal command line
+>> git commit -m initial-commit - to commit staged files with "initial-commit" name without spaces
+	>> can execute commit in the ui
+>> git log -- oneline - to see the commit id/hash in terminal
+>> install git graph extension
+>> merge one branch into another
+	>> locate in the branch to get the commit to
+	>> git merge --no-ff "name-of-the-branch" to merge in
+		>> the merge is done as a single commit even if there are several commits in the branch
+		>> the branch still remains  available
+			>> the branch can be deleted but then all commits are deleted as well
+			>> git branch -d "name-of-the-branch"
+github
+>> create an account
+>> publish to the cloud using ui
+	>> public or private
+	>> all branchs and files are copied into a repository
+>> clone repository brings the cloud into pc
+>> node_modules folder needs to be recreated
+	>> npm run i
+
+---------------------------------------------------------------------------------------
+
+git masterclass
+
+clone repository via command line
+	do not touch git folder which contains all project settings and info
+	npm init --yes - to initialise a project
+commit small changes for ease of traceability and error checking
+conventionalcommits.org
+	give commits meaningfull short names
+gitkraken
+do not save dependencies in github
+	gitignore to exclude node_modules
+		just write folder name inside .gitignore
+	only track personal code not others code
+should not delete commits rather revert
+colaborate with git
+	add as colaborator to the repository
+		make commits directly in the repository
+	fork the repository
+		creates a linked copy to the original public repository
+		fork gets info from changes in original repository
+		create folder and clone git fork
+			add a . at the end git clone "https:\\..." to maintain folder structure
+		inform-->wait go ahead-->develop-->pull request-->commit
+		open issue
+		owner or collaborator creates a development branch in main repository
+		developer gets branch into fork via git hub web page
+			can give diferent name. not advise.
+			git fetch and clone in terminal to sync changes with fork
+	pull request via git hub web page
+	 pulling - merge local cloud to pc
+	 pushing - merge local pc to cloud
+	pull from branch to branch not branch to mains
+	owner commit pull request via github website
+		squash and merge put all branches in a single branch commit
+	close issue
+	owner pull branch to mains via gitkraken after sync or github website
+		clean old branchs that are not needed
+	developer sync fork with owner and local pc
+		clean old branchs that are not needed
