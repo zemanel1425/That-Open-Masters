@@ -2,7 +2,6 @@
 //---------------------see reference file M2 L3.1-------------------------//
 import { UUIDTypes } from "uuid";
 import { IProject, Project } from "./Project";
-import { Input } from "postcss";
 
 /* create class ProjectsManager
 //----------------------------------------------------------------------------//
@@ -112,7 +111,13 @@ private setDetailsPage(project: Project) {
   if (cardRole) {cardRole.textContent = project.userRole}
 	const cardDate = detailsPage.querySelector("[data-project-info='card-date']")
   if (cardDate) {cardDate.textContent = new Date (project.finishDate).toDateString()}
-}
+	const cardInitials = detailsPage.querySelector("[data-project-info='card-initials']")
+	if (cardInitials) {
+		cardInitials.textContent = project.nameInitials;
+    (cardInitials as HTMLElement).style.background = project.backColor;
+	}
+  }
+
 /* create getProject method
 //-------------------------------------------------------------------------------------//
 	create getProject and ensure argument is of data type string

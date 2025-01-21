@@ -9,7 +9,7 @@ export custom data types to use within files
 //----------------------------------------------------------------------------//
 */
 export type ProjectStatus = "active" | "inactive" | "finished" 
-export type UserRole = "architect" | "engineer" | "developer" 
+export type UserRole = "architect" | "engineer" | "developer"
 
 /* create interface IProject
 //----------------------------------------------------------------------------//
@@ -36,7 +36,7 @@ export interface IProject {
 ///		also avoid confusion with possible class names
 */
 
-function nameInitials(name: string) {  
+export function nameInitials(name: string) {  
   const words = name.split(' ')
   let initials: string
   if (words.length > 1) {
@@ -75,6 +75,8 @@ export class Project implements IProject {
   cost: number = 0
   progress: number = 0
   id: string
+	nameInitials: string
+	backColor: string
 /* project class lesson secrets
 /// - classes are project templates
 ///		class NameSyntax {}
@@ -128,13 +130,14 @@ logic end
 			const randomIndex = Math.floor(Math.random() * 5);
 			return colors[randomIndex];
 		}
-		
+		this.nameInitials = nameInitials(this.name)
+		this.backColor = randomColor()
     this.ui = document.createElement("div") 
     this.ui.className = "project-card" 
     this.ui.innerHTML = `
     <div class="card-header">
-      <p style= "width: 25px; display: flex; align-items: center; padding: 10px; border-radius: 8px; 
-			aspect-ratio: 1; background-color: ${randomColor()}">${nameInitials(this.name)}</p>
+      <p style= "display: flex; align-items: center; padding: 8px; border-radius: 100%;	font-size: 20px;
+			 font-weight: bold; aspect-ratio: 1; background-color: ${this.backColor}">${this.nameInitials}</p>
       <div>
         <h5>${this.name}</h5>
         <p>${this.description}</p>
