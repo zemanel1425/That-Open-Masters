@@ -122,11 +122,13 @@ logic end
 //---------------------------------------------------------------------------------------------//
 */
   setUi () {
-    if (this.ui && this.ui instanceof HTMLElement) {return}
+    if (this.ui && this.ui instanceof HTMLElement || this.name.length < 5) {return}
+
 		function randomColor() {
 			const randomIndex = Math.floor(Math.random() * 5);
 			return colors[randomIndex];
 		}
+		
     this.ui = document.createElement("div") 
     this.ui.className = "project-card" 
     this.ui.innerHTML = `

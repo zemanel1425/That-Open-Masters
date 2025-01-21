@@ -223,7 +223,12 @@ if (projectForm && projectForm instanceof HTMLFormElement) {
 			console.log(project)
 		} catch (err) {
 			const name = formData.get("name") as string
-			displayErrorMessage("err-popup", `A project with the name '${name}' already exists.`)
+			if (name.length < 5) {
+				displayErrorMessage("err-popup", `The project name must be at least 5 letters long.`)
+			}
+			else {
+				displayErrorMessage("err-popup", `A project with the name '${name}' already exists.`)
+			}
 		}
 	})
 } else {
