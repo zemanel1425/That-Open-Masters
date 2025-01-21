@@ -36,6 +36,18 @@ export interface IProject {
 ///		also avoid confusion with possible class names
 */
 
+function nameInitials(name: string) {  
+  const words = name.split(' ')
+  let initials: string
+  if (words.length > 1) {
+    initials = words.slice(0, 2)
+      .map(word => word.charAt(0).toUpperCase())
+      .join('')
+  } else {
+    initials = words[0].slice(0, 2).toUpperCase()
+  }
+  return initials
+}
 /* create class project
 //--------------------------------------------------------------------------------------//
 exports class Project
@@ -66,6 +78,7 @@ export class Project implements IProject {
 ///	-	export the object class so it can be used in other files
 ///	-	| symbol defines or
 */
+
 
 /* create class project constructor
 //-------------------------------------------------------------------------------------//
@@ -111,7 +124,7 @@ logic end
     this.ui.className = "project-card" 
     this.ui.innerHTML = `
     <div class="card-header">
-      <p style="background-color: #ca8134; padding: 10px; border-radius: 8px; aspect-ratio: 1;">HC</p>
+      <p style="background-color: #ca8134; padding: 10px; border-radius: 8px; aspect-ratio: 1;">${nameInitials(this.name)}</p>
       <div>
         <h5>${this.name}</h5>
         <p>${this.description}</p>
