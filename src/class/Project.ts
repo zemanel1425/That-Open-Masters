@@ -1,6 +1,5 @@
 //-------THE PURPOSE OF THIS FILE IS TO STORE THE PROJECT CLASSES-------//
 //----------------------see reference file M2 L3.1-----------------------//
-import { Colors } from "picocolors/types"
 import {v4 as uuidv4} from "uuid"
 
 /* create custom data types
@@ -131,7 +130,6 @@ logic end
 			const randomIndex = Math.floor(Math.random() * 5);
 			return colors[randomIndex];
 		}
-
 		this.nameInitials = nameInitials(this.name)
 		this.backColor = randomColor()
     this.ui = document.createElement("div") 

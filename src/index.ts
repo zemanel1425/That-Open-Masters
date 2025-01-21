@@ -108,7 +108,7 @@ end logic
 const newProjectBtn = document.getElementById("btn-new-project")
 if (newProjectBtn) {
 	newProjectBtn.addEventListener("click", () => {
-		toggleModal("new-project-modal", true) 
+		toggleModal("new-project-modal", true)
 	})
 } else {
 	console.warn("no button found")
@@ -209,13 +209,16 @@ if (projectForm && projectForm instanceof HTMLFormElement) {
 	projectForm.addEventListener("submit", (e) => {
 		e.preventDefault()
 		const formData = new FormData(projectForm)
+		const finishDateValue = formData.get("finishDate") as string
+		const finishDate = finishDateValue ? new Date(finishDateValue) : new Date()
 		const projectData: IProject = {
 			name: formData.get("name") as string,
 			description: formData.get("description") as string,
 			status: formData.get("status") as ProjectStatus,
 			userRole: formData.get("userRole") as UserRole,
-			finishDate: new Date(formData.get("finishDate") as string)
+			finishDate: finishDate
 		}
+
 		try {
 			const project = projectsManager.newProject(projectData)
 			projectForm.reset()
