@@ -48,6 +48,9 @@ function nameInitials(name: string) {
   }
   return initials
 }
+
+const colors = ["#9f351d", "#177a29", "#2f3d7f", "#946a26", "#8236a3", "#ad3e31"];
+
 /* create class project
 //--------------------------------------------------------------------------------------//
 exports class Project
@@ -120,11 +123,16 @@ logic end
 */
   setUi () {
     if (this.ui && this.ui instanceof HTMLElement) {return}
+		function randomColor() {
+			const randomIndex = Math.floor(Math.random() * 5);
+			return colors[randomIndex];
+		}
     this.ui = document.createElement("div") 
     this.ui.className = "project-card" 
     this.ui.innerHTML = `
     <div class="card-header">
-      <p style="background-color: #ca8134; padding: 10px; border-radius: 8px; aspect-ratio: 1;">${nameInitials(this.name)}</p>
+      <p style= "width: 25px; display: flex; align-items: center; padding: 10px; border-radius: 8px; 
+			aspect-ratio: 1; background-color: ${randomColor()}">${nameInitials(this.name)}</p>
       <div>
         <h5>${this.name}</h5>
         <p>${this.description}</p>
