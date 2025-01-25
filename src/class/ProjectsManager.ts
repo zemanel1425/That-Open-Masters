@@ -1,69 +1,42 @@
 //------------------FILE TO USED TO MANAGE PROJECTS----------------------//
 //---------------------see reference file M2 L3.1-------------------------//
 import { UUIDTypes } from "uuid";
-import { IProject, Project } from "./Project";
+import { IProject, nameInitials, Project } from "./Project";
 
-/* create class ProjectsManager
-//----------------------------------------------------------------------------//
-export class projectsmanager
-	define list property as an array of data type class project
-	define ui property with data type htmlelement
-//----------------------------------------------------------------------------//
-*/
+// CREATE CLASS PROJECTS MANAGER
 export class ProjectsManager {
   list: Project[] = []
   ui: HTMLElement
   id: UUIDTypes
-/* class projects manager lesson secrests
-/// - master class for the whole applicaton to manage projects
-///		create, delete, import, export, etc.
-///	-	list is an array of project instances
-///		will serve as a reference to all projects
-///	-	ui is going to be the container for all project cards
-*/
 
-/* create class projectsmanager constructor
-//-------------------------------------------------------------------------------------//
-	create constructor and ensure argument is same data type as IProject
-		assign the value of container to the current object instance property
-		assign default values to the current object instance
-//-------------------------------------------------------------------------------------//
-*/
+// CLASS PROJECTS MANAGER CONSTRUCTOR
   constructor(container: HTMLElement) {
     this.ui = container
     this.newProject({
       name: "Default Name" as string,
       description: "Default Description" as string,
-      status: "active",
-      userRole: "developer",
+      status: "Active",
+      userRole: "Developer",
       finishDate: new Date(),
     })
   }
-/* projectsmanager constructor lesson secrests
-/// - argument container would be projects-list in html file
-*/
 
-/* create class method newProject
-//----------------------------------------------------------------------------//
-define newproject method ensure argument is same data type as IProject 
-	define const projectnames as a list of project names
-		return a list of project names
-	define const nameinuse using the includes method on projectnames
-	if nameinuse is true
-		throw a new error message
-	else
-	creates new project instance and stores its value in const project
-	add event listener to card ui
-		define const projectspage
-		define const detailspage
-		if flow control not one nor the other finish code
-		else hide projects page
-		show details page
-	run append method and 
-	run push method and store values in current object instance list property
-	return the value of the methode 
-//----------------------------------------------------------------------------//
-*/
+// create class method newProject
+	updateProjectDetails(data: IProject) {
+		const project = new Project(data)
+		project.ui.addEventListener("click", () => {
+			const projectsPage = document.getElementById("projects-page")
+			const detailsPage = document.getElementById("project-details")
+			if (!projectsPage || !detailsPage) {return}
+			projectsPage.style.display = "none"
+			detailsPage.style.display = "flex"
+			this.updateDetailsForm(project)
+		})
+		this.ui.append(project.ui)
+		this.list.push(project)
+		return project
+	}
+
   newProject(data: IProject) {
     const projectNames = this.list.map((project) => {
       return project.name
@@ -85,15 +58,10 @@ define newproject method ensure argument is same data type as IProject
     this.list.push(project)
     return project
   }
-/* newproject method lesson secrests
-/// - list.map makes a new list based on the return values of the callback function
-///	-	throw is a special keyword used to stop the execution when an error occurs
-///	-	error is a built in class
-/// - || or syntax 
-*/
 
 private setDetailsPage(project: Project) {
 	const detailsPage = document.getElementById("project-details")
+	console.log("Details Page Loaded")
 	if(!detailsPage) {return}
 	const name = detailsPage.querySelector("[data-project-info='name']")
 	if (name) {name.textContent = project.name}
@@ -116,35 +84,64 @@ private setDetailsPage(project: Project) {
 		cardInitials.textContent = project.nameInitials;
     (cardInitials as HTMLElement).style.background = project.backColor;
 	}
-  }
+}
+private updateDetailsForm(project: Project) {
+	const detailsPage = document.getElementById("edit-project-modal")
+	if(!detailsPage) {return}
+	const name = detailsPage.querySelector("[data-project-info='name']")
+	if (name) {name.textContent = project.name}
+	const description = detailsPage.querySelector("[data-project-info='description']")
+	if (description) {description.textContent = project.description}
+	const cardName = detailsPage.querySelector("[data-project-info='card-name']")
+	if (cardName) {cardName.textContent = project.name}
+	const cardDescription = detailsPage.querySelector("[data-project-info='card-description']")
+	if (cardDescription) {cardDescription.textContent = project.description}
+	const cardStatus = detailsPage.querySelector("[data-project-info='card-status']")
+	if (cardStatus) {cardStatus.textContent = project.status}
+	const cardCost = detailsPage.querySelector("[data-project-info='card-cost']")
+  if (cardCost) {cardCost.textContent = project.cost.toString()}
+	const cardRole = detailsPage.querySelector("[data-project-info='card-role']")
+  if (cardRole) {cardRole.textContent = project.userRole}
+	const cardDate = detailsPage.querySelector("[data-project-info='card-date']")
+  if (cardDate) {cardDate.textContent = new Date (project.finishDate).toDateString()}
+	const cardInitials = detailsPage.querySelector("[data-project-info='card-initials']")
+	if (cardInitials) {
+		cardInitials.textContent = project.nameInitials;
+    (cardInitials as HTMLElement).style.background = project.backColor;
+	}
+}
 
-/* create getProject method
-//-------------------------------------------------------------------------------------//
-	create getProject and ensure argument is of data type string
-		assign const project the result of run method find in current list 
-			return the project id in current list using find method
-		return const project value		
-//-------------------------------------------------------------------------------------//
-*/
-  getProject(id: string) {
-    const project = this.list.find((project) => {
-      return project.id === id
-    })
-    return project
-  }
+// create getProject method
+	getProject(id: string) {
+		const project = this.list.find((project) => {
+			return project.id === id
+		})
+		return project
+	}
 /* getProject method lesson secrests
 /// - find method iterate over the projects list and returns the project id if
 ///		matches the id provided in the argument.
 /// - getproject id return the project with id or undifined if unmatched
 */
 
-  getProjectByName(name: string) {
-    const project = this.list.find((project) => {
-      return project.name === name
-    })
-    return project
-  }
 
+	getProjectByName(name: string) {
+		const project = this.list.find((project) => {
+			return project.name === name
+		})
+		return project
+	}
+
+  getCurrentProj() {
+		const detailsPage = document.getElementById("project-details")
+    if (!detailsPage) { return }
+    const name = detailsPage.querySelector("[data-project-info='name']")
+    const currentProject = this.list.find((project) => {
+      return project.name === name?.textContent
+    })
+    if (name && currentProject) { name.textContent = currentProject.name }
+    return currentProject
+  }
 
   calculateTotalCost() {
     const totalCost = this.list.reduce(
@@ -154,8 +151,8 @@ private setDetailsPage(project: Project) {
     return totalCost
   }
 
-/* create deleteProject method
-//-------------------------------------------------------------------------------------//
+	/* create deleteProject method
+	//-------------------------------------------------------------------------------------//
 	create deleteProject and ensure argument is of data type string
 		assign const project the result of getproject method
 		if project not fund finish function

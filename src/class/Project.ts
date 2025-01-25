@@ -8,8 +8,8 @@ create data types using the keyword type
 export custom data types to use within files
 //----------------------------------------------------------------------------//
 */
-export type ProjectStatus = "active" | "inactive" | "finished" 
-export type UserRole = "architect" | "engineer" | "developer"
+export type ProjectStatus = "Active" | "inactive" | "Finished" 
+export type UserRole = "Architect" | "Engineer" | "Developer"
 
 /* create interface IProject
 //----------------------------------------------------------------------------//
@@ -68,8 +68,8 @@ exports class Project
 export class Project implements IProject {
   name: string
   description: string
-  status: "active" | "inactive" | "finished"
-  userRole: "architect" | "engineer" | "developer"
+  status: "Active" | "inactive" | "Finished"
+  userRole: "Architect" | "Engineer" | "Developer"
   finishDate: Date
   ui: HTMLDivElement 
   cost: number = 0
