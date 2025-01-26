@@ -75,9 +75,10 @@
 			<h2 form-info="form-title">Edit Project</h2>
 					<div class="input-list">
 				<div class="form-field-container">
-					<label><span class="material-icons-round">apartment</span>Name</label>
-					<input name="name" type="text" placeholder="Enter project name">
-					<p style="color: grey; font-style: italic;">TIP: Give it a small name.</p>
+					<input name="name" type="text" style="display: flex;">
+				</div>			
+				<div class="form-field-container">
+					<input name="id" type="text" style="display: flex;">
 				</div>			
 				<div class="form-field-container">
 					<label><span class="material-icons-round">notes</span>Description</label>
@@ -103,6 +104,16 @@
 					<label for="finishDate">
 						<span class="material-icons-round">calendar_month</span>Finish Date</label>
 						<input name="finishDate" type="date" id="finishDate"></input>			
+					</div>					
+				<div class="form-field-container">
+					<label for="cost">
+						<span class="material-icons-round">attach_money</span>Cost</label>
+						<input name="cost" type="number" id="cost"></input>			
+					</div>					
+				<div class="form-field-container">
+					<label for="progress">
+						<span class="material-icons-round">show_chart</span>Estimated Progress</label>
+						<input name="progress" type="number" id="progress"></input>			
 					</div>					
 					<div style="display: flex; margin: 10px 0px 10px auto; column-gap: 10px;">
 						<button id="editcancelbutton" type="button" style="background-color: transparent;">Cancel</button>
@@ -167,7 +178,8 @@
 							</div>
 							<div>
 								<div style="background-color: #404040; border-radius: 9999px; overflow: auto">
-									<div data-project-info="card-completion" style="width: 80%; padding: 4px 0; background-color: #128944; text-align: center;">80%</div>
+									<div id="progress-bar" data-project-info="card-completion" style="width: 50%; padding: 4px 0;
+									 background-color: #128944; text-align: center;">10%</div>
 								</div>
 							</div>							
 						</div>

@@ -1,7 +1,6 @@
 //THE PURPOSE OF THIS FILE IS TO INTERACT WITH THE DOM AND TO HANDLE EVENTS//
 //-------see reference file M2 L3.1--------//
 //-------creating a git comment--------//
-import { todo } from "node:test"
 import { IProject, Project, ProjectStatus, UserRole } from "./class/Project"
 import { ProjectsManager } from "./class/ProjectsManager"
 
@@ -57,6 +56,7 @@ if (projectBtn) {
 	console.warn("Project button not found")
 }
 
+
 //EDIT PROJECT BUTTON EVENT LISTENER
 const btnEditProject = document.getElementById("btn-edit-project")
 const editProjectForm = document.getElementById("edit-project-form")
@@ -64,21 +64,23 @@ const editProjectForm = document.getElementById("edit-project-form")
 if (btnEditProject) {
 	btnEditProject.addEventListener("click", () => {
 		console.log("Edit Project Form Loaded")
-		const project = projectsManager.getCurrentProj()
+		const project = projectsManager.getCurrentProj() as Project
 		const formTitle = editProjectForm?.querySelector("[form-info ='form-title']")
-		if (formTitle) {formTitle.textContent = "Edit " + project?.name + " Project"}
-		console.log(project, project?.id)
+		if (formTitle) {formTitle.textContent = "Edit " + project.name + " Project"}
 		const finishDate = project?.finishDate ? new Date(project.finishDate).toISOString().split('T')[0] : ''
 		toggleModal("edit-project-modal", true)
 		if (editProjectForm)
-		{
-			editProjectForm["name"].value = project?.name
-			editProjectForm["name"].disabled = true
-			editProjectForm["description"].value = project?.description
-			editProjectForm["status"].value = project?.status			
-			editProjectForm["userRole"].value = project?.userRole
-			editProjectForm["finishDate"].value = finishDate
-		}		
+			{
+				editProjectForm["name"].value = project.name
+				editProjectForm["id"].value = project.id
+				editProjectForm["description"].value = project.description
+				editProjectForm["status"].value = project.status			
+				editProjectForm["userRole"].value = project.userRole
+				editProjectForm["finishDate"].value = finishDate
+				editProjectForm["cost"].value = project.cost
+				editProjectForm["progress"].value = project.progress
+			}	
+			console.log(project, "at the end of the edit project button event listener")
 	})
 } else {
 	console.warn("no button found")
@@ -88,32 +90,33 @@ if (btnEditProject) {
 if (editProjectForm && editProjectForm instanceof HTMLFormElement) {
 	editProjectForm.addEventListener("submit", (e) => {
 		e.preventDefault()
-	//const name = projectsManager.getCurrentProjName()
 		const formData = new FormData(editProjectForm)
 		const finishDateValue = formData.get("finishDate") as string
 		const finishDate = finishDateValue ? new Date(finishDateValue) : new Date()
-		const projectData: IProject = {
-			name: formData.get("description") as string,
+		const projectData: Project = {
+			name: formData.get("name") as string,
 			description: formData.get("description") as string,
 			status: formData.get("status") as ProjectStatus,
 			userRole: formData.get("userRole") as UserRole,
-			finishDate: finishDate
+			finishDate: finishDate,
+			id: formData.get("id") as string,
+			cost: Number(formData.get("cost")),
+			progress: Number(formData.get("progress")),
 		}
+		projectsManager.deleteProject(projectData.id)
 		try {
-			const project = projectsManager.updateProjectDetails(projectData)
-			editProjectForm.reset()
+			projectsManager.updateProjectDetails(projectData)
+			const project = projectsManager.updateProject(projectData)
 			toggleModal("edit-project-modal", false)
 			console.log(project)
 		} catch (err) {
-			console.log(projectData)
+			console.log("this is the error", err)
 		}
 	})
 } else {
 	console.warn("no button found")
 }
 
-function defDate () {
-}
 
 // New Project Button Event Listener
 const newProjectBtn = document.getElementById("btn-new-project")
@@ -169,9 +172,7 @@ if (closePopupBtn) {
 	console.warn("no button found")
 }
 
-
-
-// projectForm event listener
+// NEW PROJECT FORM EVENT LISTENER
 const projectForm = document.getElementById("new-project-form")
 if (projectForm && projectForm instanceof HTMLFormElement) {
 	projectForm.addEventListener("submit", (e) => {
