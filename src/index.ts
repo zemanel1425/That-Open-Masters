@@ -1,22 +1,8 @@
-//THE PURPOSE OF THIS FILE IS TO INTERACT WITH THE DOM AND TO HANDLE EVENTS//
-//-------see reference file M2 L3.1--------//
-//-------creating a git comment--------//
+//---------THE PURPOSE OF THIS FILE IS TO INTERACT WITH THE DOM AND TO HANDLE EVENTS----------//
 import { IProject, Project, ProjectStatus, UserRole } from "./class/Project"
 import { ProjectsManager } from "./class/ProjectsManager"
 
-/* Toggle Modal Function Definition
-//----------------------------------------------------------------------------//
-Takes html modal element id and alternates between visible and close
-	sets const modal to html reference from html by id
-	if modal is present and is an html dialog instance
-		if show property is true
-		in case both previous statments are truthy then invoke showModal function
-		in case show property is false invoke close function
-	in case either modal is not present or not an html dialog
-	log a message in the console
-end logic
-//----------------------------------------------------------------------------//
-*/
+// TOGGLE MODAL FUNCTION
 function toggleModal(id: string, show: boolean) {
 	const modal = document.getElementById(id)
 	if (modal && modal instanceof HTMLDialogElement) {
@@ -29,18 +15,8 @@ function toggleModal(id: string, show: boolean) {
 		console.warn("modal not found. ID: ", id)
 	}
 }
-/* toggleModal lesson secrets
-/// - const is a key word for ts variables
-///		variables store reusable information
-///		no space in const name instead use camelCase
-/// - hardcode is the process of setting the argument value
-///		inside the function; to avoid hardcode set parameter as id 
-/// - this will be used for to do modal
-/// - anonymous functions ()=>{} are not stored thus can't be reused
-*/
 
-//displayErrorMessage function
-//receive a message, place it in the modal, and show the modal. 
+// DISPLAY ERROR MESSAGE FUNCTION
 function displayErrorMessage(id: string, message: string) {
 	const errorContainer = document.getElementById("error-container")
 	const popupErrMsg = document.getElementById(id) as HTMLDialogElement
@@ -57,30 +33,14 @@ function displayErrorMessage(id: string, message: string) {
 	}
 }
 
-/* const projectsListUI
-//--------------------------------------------------------------//
-const projectsmanager gets the reference to html document
-*/
+// CONSTANT PROJECTSLISTUI
 const projectsListUI = document.getElementById("projects-list") as HTMLElement
-/* const projectsListUI lesson secrests
-/// - the const get the value of projects-list in html and is used
-///		as the input for the argument in const projectsmanager
-/// -	use type assertion to prevent errors for simplicity.
-///		if else flow control it would be also possible
-*/
 
-/* const projectManager
-//--------------------------------------------------------------//
-const projectsmanager creates a new projectmanager instance
-*/
+// CONSTANT PROJECTSMANAGER
 const projectsManager = new ProjectsManager(projectsListUI)
-/* const projectsManager lesson secrests
-*/
 
-/* Project Page Button Event listener
-//--------------------------------------------------------------//
-//--------------------------------------------------------------//
-*/
+
+// PROJECTS LIST BUTTON EVENT LISTENER
 const projectBtn = document.getElementById("project-btn")
 if (projectBtn) {
 	projectBtn.addEventListener("click", () => {
@@ -89,59 +49,109 @@ if (projectBtn) {
 		if (!projectsPage || !detailsPage) {return}
 		projectsPage.style.display = "flex"
 		detailsPage.style.display = "none"
+		console.log("Project List Page Loaded")
 	})
 } else {
 	console.warn("Project button not found")
 }
 
-/* New Project Button Event Listener
-//--------------------------------------------------------------//
-sets const newProjectBtn gets button reference from html by hardcode
-if new newProjectBtn thruty
-	add event click
-	run callback anonymous function toggleModal
-	in case newProjectBtn is falsy
-	log warn in console
-end logic
-//--------------------------------------------------------------//
-*/
+// EDIT PROJECT BUTTON EVENT LISTENER
+const btnEditProject = document.getElementById("btn-edit-project")
+if (btnEditProject) {
+	btnEditProject.addEventListener("click", () => {
+		console.log("Edit Project Form Loaded")
+		const project = projectsManager.getCurrentProj() as Project
+		const formTitle = editProjectForm?.querySelector("[form-info ='form-title']")
+		if (formTitle) {formTitle.textContent = "Edit " + project.name + " Project"}
+		const finishDate = project?.finishDate ? new Date(project.finishDate).toISOString().split('T')[0] : ''
+		toggleModal("edit-project-modal", true)
+		if (editProjectForm)
+			{
+				editProjectForm["name"].value = project.name
+				editProjectForm["editid"].value = project.id
+				editProjectForm["backcolor"].value = project.backColor
+				editProjectForm["description"].value = project.description
+				editProjectForm["status"].value = project.status			
+				editProjectForm["userRole"].value = project.userRole
+				editProjectForm["finishDate"].value = finishDate
+				editProjectForm["cost"].value = project.cost
+				editProjectForm["progress"].value = project.progress
+			}
+		})
+	} else {
+		console.warn("no button found")
+	}
+	
+	// EDIT PROJECT FORM EVENT LISTENER
+	const editProjectForm = document.getElementById("edit-project-form")
+	//const projCard = document.getElementById("proj-card") read from index
+	//const projCard = document.getElementById("proj-card") read from projects setui
+	//console.log(projCard)
+	if (editProjectForm && editProjectForm instanceof HTMLFormElement) {
+		editProjectForm.addEventListener("submit", (e) => {
+			e.preventDefault()
+			const formData = new FormData(editProjectForm)
+			const finishDateValue = formData.get("finishDate") as string
+			const finishDate = finishDateValue ? new Date(finishDateValue) : new Date()
+			const progress = Number(formData.get("progress"))
+			if (progress) {
+				if (progress < 0 || progress > 100) {
+					displayErrorMessage("err-popup", `Progress value should be between 0 - 100.`)
+					editProjectForm["progress"].value = progress
+					return
+				}
+			}
+			const projectData: Project = {
+				name: formData.get("name") as string,
+				description: formData.get("description") as string,
+				status: formData.get("status") as ProjectStatus,
+				userRole: formData.get("userRole") as UserRole,
+				finishDate: finishDate,
+				id: formData.get("editid") as string,
+				cost: Number(formData.get("cost")),
+				progress: progress,
+				backColor: formData.get("backcolor") as string,
+				nameInitials:'',
+				//ui: projCard as HTMLDivElement,
+				//setUi: () => { editProject }
+			}
+			projectsManager.deleteProject(projectData.id)
+			try {
+				projectsManager.updateProjectDetails(projectData)
+				projectsManager.updateProject(projectData)
+				console.log("Project Information Updated Successfuly!")
+				toggleModal("edit-project-modal", false)
+			} catch (err) {
+				console.log("this is the error", err)
+			}
+		})
+	} else {
+		console.warn("no button found")
+	}
+	
+// NEW PROJECT BUTTON EVENT LISTENER
 const newProjectBtn = document.getElementById("btn-new-project")
+
+function randomColor() {
+	const colors = ["#9f351d", "#177a29", "#2f3d7f", "#946a26", "#8236a3", "#ad3e31"];
+	const randomIndex = Math.floor(Math.random() * 5);
+	return colors[randomIndex];
+}
+
 if (newProjectBtn) {
 	newProjectBtn.addEventListener("click", () => {
+		console.log("New Project Form Loaded")
 		toggleModal("new-project-modal", true)
 	})
 } else {
 	console.warn("no button found")
 }
-/* newProjectBtn lesson secrets
-/// - HTML need to get this file referenced to load, before body tag closes type attribute: 
-///		<script src="./src/index.ts"></script>
-///			</body> 
-/// - if else statement is called here a flow control ///
-/// - adding () in the call back function override the eventlistener ///
-///   to avoid it enclose an anonymous function inside callback function ///
-*/
 
-/* const cancelBtn
-//--------------------------------------------------------------//
-const cancelBtn gets reference from html file
-if flow control true
-	run addeventlistenner method click invoke anonymous function
-		togglemodal funciton sets to false
-		if flow control true
-		set popuprrmsg to no visibility
-			else
-			log warn in console
-		end else
-	end addeventlistener
-	else
-	log warn in console
-end logic
-//--------------------------------------------------------------//
-*/
-const cancelBtn = document.getElementById("cancelbutton")
-if (cancelBtn) {	
-	cancelBtn.addEventListener("click", () => {
+// NEW PROJECT CANCEL BUTTON EVENT LISTENER
+const newCancelBtn = document.getElementById("cancelbutton")
+if (newCancelBtn) {	
+	newCancelBtn.addEventListener("click", () => {
+		console.log("New Project Creation Cancelled")
 		toggleModal("new-project-modal", false)
 		if (popupErrMsg) {
 			popupErrMsg.style.display = "none"
@@ -152,11 +162,22 @@ if (cancelBtn) {
 } else {
 	console.warn("no button found")
 }
-/* const projectsManager lesson secrests
-///	-	buttons need type assignmente in html file to prevent
-///		submit event event by default. see reference file M2 L3.6
-*/
 
+// EDIT PROJECT CANCEL BUTTON EVENT LISTENER
+const editCancelBtn = document.getElementById("editcancelbutton")
+if (editCancelBtn) {	
+	editCancelBtn.addEventListener("click", () => {
+		toggleModal("edit-project-modal", false)
+		console.log("Project Edition Cancelled")
+		if (popupErrMsg) {
+			popupErrMsg.style.display = "none"
+		} else {
+			console.warn("Popup element not found")
+		}
+	})
+} else {
+	console.warn("no button found")
+}
 const closePopupBtn = document.getElementById("close-popup-btn")
 const popupErrMsg = document.getElementById("err-popup")
 if (closePopupBtn) {
@@ -173,37 +194,7 @@ if (closePopupBtn) {
 	console.warn("no button found")
 }
 
-/* projectForm event listener
-//-------------------------------------------------------------------------------------------//
-sets const projectForm to form reference from html by hardcode
-	if projectForm is present and is an html form instance
-		add event submit
-		run callback anonymous function to prevent default action
-			sets const formData to a new instance of FormData class with projectForm as argument
-			sets const projectData to the data array below and ensure IProject data type
-				gets	name formData from projectData and ensure IProject data type
-							description
-							status
-							userRole
-							finishDate
-			end data collection
-		try
-			sets const project the result value of newproject method invoked with projecdata
-			run reset method to clean up the form after submit
-			run togglemodal function to close form ui
-			log project new project data in console
-			define catch
-				define displayerrormessage function
-					define errorcontainer reference html file
-					if else flow control
-			define const name
-			run display error message function
-			define popuperrmsg as reference to html
-			if else flow control			
-	log warn in console
-end logic
-//-------------------------------------------------------------------------------------------//
-*/
+// NEW PROJECT FORM EVENT LISTENER
 const projectForm = document.getElementById("new-project-form")
 if (projectForm && projectForm instanceof HTMLFormElement) {
 	projectForm.addEventListener("submit", (e) => {
@@ -216,14 +207,14 @@ if (projectForm && projectForm instanceof HTMLFormElement) {
 			description: formData.get("description") as string,
 			status: formData.get("status") as ProjectStatus,
 			userRole: formData.get("userRole") as UserRole,
-			finishDate: finishDate
+			finishDate: finishDate,
+			backColor: randomColor()
 		}
-
 		try {
-			const project = projectsManager.newProject(projectData)
+			projectsManager.newProject(projectData)
 			projectForm.reset()
 			toggleModal("new-project-modal", false)
-			console.log(project)
+			console.log("Project created Successfully!")
 		} catch (err) {
 			const name = formData.get("name") as string
 			if (name.length < 5) {
@@ -237,19 +228,7 @@ if (projectForm && projectForm instanceof HTMLFormElement) {
 } else {
 	console.warn("the form does not exist: ", projectForm)
 }
-/* projectForm event lesson secrets
-/// - many events have default action, for form is submit and reload page
-///		add (e) argument to callback function to prevent default
-///	-	classes are object templates and are written in PascalCase 
-// 		FormData is a built-in class that provides a set of key/value pairs  
-/// - type assertion use 'as' keyword to assign data types
-///		use to minimum necessry
-/// - try catch statement is kind of a if else flow control statement
-///		any line that gives an error inside try stops its execution and
-///		any line inside catch is executed
-/// - catch gives access to error message
-*/
-
+// EXPORT PROJECTS BUTTON
 const exportProjectBtn = document.getElementById("export-projects-btn")
 if (exportProjectBtn) {
 	exportProjectBtn.addEventListener("click", () => {
@@ -257,10 +236,10 @@ if (exportProjectBtn) {
 	})
 }
 
+// IMPORT PROJECTS BUTTON
 const importProjectsBtn = document.getElementById("import-projects-btn")
 if (importProjectsBtn) {
 	importProjectsBtn.addEventListener("click", () => {
 		projectsManager.importFromJSON()
 	})
 }
-
