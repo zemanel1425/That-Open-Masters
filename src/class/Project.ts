@@ -13,9 +13,10 @@ export interface IProject {
   status: ProjectStatus
   userRole: UserRole
   finishDate: Date
+	backColor: string
 }
 
-export function nameInitials(name: string) {  
+function nameInitials(name: string) {  
   const words = name.split(' ')
   let initials: string
   if (words.length > 1) {
@@ -28,27 +29,28 @@ export function nameInitials(name: string) {
   return initials
 }
 
-const colors = ["#9f351d", "#177a29", "#2f3d7f", "#946a26", "#8236a3", "#ad3e31"];
-
 // CREATE CLASS PROJECT
 export class Project implements IProject {
+// to satisfy interface
   name: string
   description: string
   status: "Active" | "inactive" | "Finished"
   userRole: "Architect" | "Engineer" | "Developer"
   finishDate: Date
+	backColor: string
+
+// class internals
   ui: HTMLDivElement 
   cost: number
   progress: number
   id: string
 	nameInitials: string
-	backColor: string
 
 // CREATE CLASS PROJECT CONSTRUCTOR
   constructor(data: IProject) {
     this.id = uuidv4()
-		this.cost = 0
-		this.progress = 0
+		this.cost = 2500
+		this.progress = 30
     for (const key in data) {
       this[key] = data[key]
     }
@@ -58,15 +60,11 @@ export class Project implements IProject {
 // CREATE CLASS PROJECT METHOD SET UI
   setUi () {
     if (this.ui && this.ui instanceof HTMLElement || this.name.length < 5) {return}
-
-		function randomColor() {
-			const randomIndex = Math.floor(Math.random() * 5);
-			return colors[randomIndex];
-		}
 		this.nameInitials = nameInitials(this.name)
-		this.backColor = randomColor()
+		this.backColor = this.backColor
     this.ui = document.createElement("div") 
     this.ui.className = "project-card" 
+		//this.ui.id = "proj-card"
     this.ui.innerHTML = `
     <div class="card-header">
       <p style= "display: flex; align-items: center; padding: 8px; border-radius: 100%;	font-size: 20px;

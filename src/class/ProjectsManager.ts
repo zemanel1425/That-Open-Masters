@@ -1,7 +1,7 @@
 //------------------FILE TO USED TO MANAGE PROJECTS----------------------//
 //---------------------see reference file M2 L3.1-------------------------//
 import { UUIDTypes } from "uuid";
-import { IProject, nameInitials, Project } from "./Project";
+import { IProject, Project } from "./Project";
 
 // CREATE CLASS PROJECTS MANAGER
 export class ProjectsManager {
@@ -13,15 +13,16 @@ export class ProjectsManager {
   constructor(container: HTMLElement) {
     this.ui = container
     this.newProject({
-      name: "Default Name" as string,
-      description: "Default Description" as string,
+      name: "Sample Project" as string,
+      description: "Sample Project Description" as string,
       status: "Active",
       userRole: "Developer",
       finishDate: new Date(),
+			backColor: "#9f229d"
     })
   }
 	
-	// UPDATE PROJECT DETAILS METHOD
+// UPDATE PROJECT DETAILS METHOD
 	updateProjectDetails(project: Project) {
 		const detailsPage = document.getElementById("project-details")
 		const name = detailsPage?.querySelector("[data-project-info='name']")
@@ -83,8 +84,7 @@ export class ProjectsManager {
 	
 	private setDetailsPage(project: Project) {
 		const detailsPage = document.getElementById("project-details")
-		console.log("Details Page Loaded")
-		console.log(project)
+		console.log("Project Details Page Loaded")
 	if(!detailsPage) {return}
 	const name = detailsPage.querySelector("[data-project-info='name']")
 	if (name) {name.textContent = project.name}

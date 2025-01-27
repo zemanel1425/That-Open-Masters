@@ -73,13 +73,12 @@
 	<dialog id="edit-project-modal">
 		<form id="edit-project-form">
 			<h2 form-info="form-title">Edit Project</h2>
-					<div class="input-list">
-				<div class="form-field-container">
-					<input name="name" type="text" style="display: flex;">
-				</div>			
-				<div class="form-field-container">
-					<input name="id" type="text" style="display: flex;">
-				</div>			
+			<div class="input-list">
+				<div class="hidden-fields">
+					<input name="name" type="text" style="display: none; padding: 0;">
+					<input name="editid" type="text" style="display: none; padding: 0;">
+					<input name="backcolor" type="text" style="display: none; padding: 0;">		
+				</div>
 				<div class="form-field-container">
 					<label><span class="material-icons-round">notes</span>Description</label>
 					<textarea name="description" cols="30" rows="5" placeholder="Provide a project summary description"></textarea>
