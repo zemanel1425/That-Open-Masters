@@ -1,6 +1,8 @@
 //---------THE PURPOSE OF THIS FILE IS TO INTERACT WITH THE DOM AND TO HANDLE EVENTS----------//
 import { IProject, Project, ProjectStatus, UserRole } from "./class/Project"
 import { ProjectsManager } from "./class/ProjectsManager"
+import { IToDo,TasktStatus } from "./class/ToDo"
+import { ToDosManager } from "./class/ToDosManager"
 
 // TOGGLE MODAL FUNCTION
 function toggleModal(id: string, show: boolean) {
@@ -35,9 +37,14 @@ function displayErrorMessage(id: string, message: string) {
 
 // CONSTANT PROJECTSLISTUI
 const projectsListUI = document.getElementById("projects-list") as HTMLElement
-
+// CONSTANT TODOSLISTUI
+const todosListUI = document.getElementById("todos-list")	as HTMLElement
 // CONSTANT PROJECTSMANAGER
 const projectsManager = new ProjectsManager(projectsListUI)
+
+// CONSTANT TODOSMANAGER
+const todoManager = new ToDosManager(todosListUI)
+
 
 
 // PROJECTS LIST BUTTON EVENT LISTENER
@@ -128,7 +135,17 @@ if (btnEditProject) {
 	} else {
 		console.warn("no button found")
 	}
-	
+
+//----------------------NEW TODO BUTTON EVENT LISTENER----------------------//
+const newTodoBtn = document.getElementById("add-todo-btn")
+if (newTodoBtn) {
+	newTodoBtn.addEventListener("click", (e) => {
+		e.preventDefault()
+		console.log("New ToDo Task Form Loaded")
+		toggleModal("new-todo-modal", true)
+	})
+}
+
 // NEW PROJECT BUTTON EVENT LISTENER
 const newProjectBtn = document.getElementById("btn-new-project")
 
@@ -153,11 +170,6 @@ if (newCancelBtn) {
 	newCancelBtn.addEventListener("click", () => {
 		console.log("New Project Creation Cancelled")
 		toggleModal("new-project-modal", false)
-		if (popupErrMsg) {
-			popupErrMsg.style.display = "none"
-		} else {
-			console.warn("Popup element not found")
-		}
 	})
 } else {
 	console.warn("no button found")
@@ -169,15 +181,23 @@ if (editCancelBtn) {
 	editCancelBtn.addEventListener("click", () => {
 		toggleModal("edit-project-modal", false)
 		console.log("Project Edition Cancelled")
-		if (popupErrMsg) {
-			popupErrMsg.style.display = "none"
-		} else {
-			console.warn("Popup element not found")
-		}
 	})
 } else {
 	console.warn("no button found")
 }
+
+// NEW TODO CANCEL BUTTON EVENT LISTENER
+const todoCancelBtn = document.getElementById("todocancelbutton")
+if (todoCancelBtn) {	
+	todoCancelBtn.addEventListener("click", () => {
+		toggleModal("new-todo-modal", false)
+		console.log("New ToDo Task Addition Cancelled")
+	})
+} else {
+	console.warn("no button found")
+}
+
+// CLOSE POP UP ERROR MESSAGES BUTTON
 const closePopupBtn = document.getElementById("close-popup-btn")
 const popupErrMsg = document.getElementById("err-popup")
 if (closePopupBtn) {
@@ -224,6 +244,43 @@ if (projectForm && projectForm instanceof HTMLFormElement) {
 				displayErrorMessage("err-popup", `A project with the name '${name}' already exists.`)
 			}
 		}
+	})
+} else {
+	console.warn("the form does not exist: ", projectForm)
+}
+
+// --------------------------------------NEW TODO FORM EVENT LISTENER
+const todoForm = document.getElementById("new-todo-form")
+if (todoForm && todoForm instanceof HTMLFormElement) {
+	todoForm.addEventListener("submit", (e) => {
+		e.preventDefault()
+		const formData = new FormData(todoForm)
+		const finishDateValue = formData.get("todo-finishDate") as string
+		const finishDate = (finishDateValue ? new Date(finishDateValue) : new Date())
+		const todoData: IToDo = {
+			description: formData.get("todo-description") as string,
+			userRole: formData.get("todo-userRole") as UserRole,
+			status: formData.get("todo-status") as TasktStatus,
+			finishDate: finishDate
+		}
+		todoManager.newToDo(todoData)
+		toggleModal("new-todo-modal", false)
+		console.log("ToDo task created Successfully!")
+		todoForm.reset()
+		/*
+		try {
+		}
+			console.log("Project created Successfully!")
+		} catch (err) {
+			const name = formData.get("name") as string
+			if (name.length < 5) {
+				displayErrorMessage("err-popup", `The project name must be at least 5 letters long.`)
+			}
+			else {
+				displayErrorMessage("err-popup", `A project with the name '${name}' already exists.`)
+			}
+		}
+		*/
 	})
 } else {
 	console.warn("the form does not exist: ", projectForm)

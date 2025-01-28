@@ -27,6 +27,47 @@
 		</div>
 		<p id="error-container" class="error-message" style="padding: 0 20px 15px 20px; text-align: justify;"></p>				
 	</dialog>
+	<!-----------------------------------NEW TODO MODAL----------------------------->
+	<dialog id="new-todo-modal">
+		<form id="new-todo-form">
+			<h2 style="display: flex; align-items: center;">
+				<span class="material-icons-round" style="padding-right: 20px;">construction</span>New ToDo Task
+			</h2>	
+			<div class="input-list">
+				<div class="hidden-fields">
+					<input name="todoid" type="text" style="display: block;">
+				</div>
+				<div class="form-field-container">
+					<label for="todo-description"><span class="material-icons-round">notes</span>Task Description</label>
+					<textarea name="todo-description" cols="30" rows="5" placeholder="Provide a clear concise task description"></textarea>
+				</div>
+				<div class="form-field-container">
+					<label for="todo-userRole"><span class="material-icons-round">account_circle</span>Assigned Role</label>
+					<select name="todo-userRole">
+						<option>Architect</option>
+						<option>Engineer</option>
+						<option>Developer</option>
+					</select>
+				</div>
+				<div class="form-field-container">
+					<label for="todo-status"><span class="material-icons-round">not_listed_location</span>Task Status</label>
+					<select name="todo-status">
+						<option>Not Started</option>
+						<option>In Progress</option>
+						<option>Completed</option>
+					</select>
+				</div>
+				<div class="form-field-container">
+					<label for="todo-finishDate"><span class="material-icons-round">calendar_month</span>Completion Date</label>
+						<input name="todo-finishDate" type="date" id="finishDate"></input>			
+					</div>					
+					<div style="display: flex; margin: 10px 0px 10px auto; column-gap: 10px;">
+						<button id="todocancelbutton" type="button" style="background-color: transparent;">Cancel</button>
+						<button type="submit" style="background-color: #128944;">Save</button>
+					</div>
+				</div>
+			</form>
+	</dialog>
 	<!--NEW PROJECT MODAL-->
 	<dialog id="new-project-modal">
 		<form id="new-project-form">
@@ -123,7 +164,7 @@
 	</dialog>
   <main id="content">
 	<!--PROJECTS PAGE-->
-		<div class="page" id="projects-page" style="display: flex;">
+		<div class="page" id="projects-page" style=" border: dashed 2px rgb(207, 62, 22); display: flex;">
 				<header>
 					<h2>Projects</h2>
 					<div style="display: flex; align-items: center;column-gap: 25px;">
@@ -139,14 +180,13 @@
 		<div class="page" id="project-details" style="display: none;">
 			<header>
 				<div>
-					<h2 data-project-info="name">Hospital Center</h2>
-					<p data-project-info="description" style="color: #969696;">Central Hospital Lat Phrao</p>
+					<h2 data-project-info="name">Default Project</h2>
 				</div>
 			</header>
 			<div class="main-page-content">
 				<div id="card-container" style="display: flex; flex-direction: column; row-gap: 30px; width: 475px">
 	<!--PROJECT CARD CONTAINER-->
-					<div id="project-card" class="dashboard-card" style="padding: 30px 0;">
+					<div id="project-card" class="dashboard-card" style="padding: 30px 0; border: dashed 2px greenyellow; ">
 						<div style="display: flex; justify-content: space-between; align-items: center; padding: 0px 30px; margin-bottom: 30px">
 							<p data-project-info="card-initials" style="display: flex; align-items: center; font-size: 20px; font-weight: bold; aspect-ratio: 1; 
 							background-color: orange; border-radius: 100%; padding: 8px;">HC</p>
@@ -183,34 +223,18 @@
 							</div>							
 						</div>
 					</div>
-					<div id="todo-card" class="dashboard-card" style="flex-grow: 1;">
+	<!--'TODO CARD DASHBOARD -->
+					<div class="dashboard-card" style="flex-grow: 1;">
 						<div style="padding: 20px 30px; display: flex; align-items: center; justify-content: space-between;">
 							<h4 style="width: 20%;">To-Do</h4>
 							<div style="display: flex; align-items: center;justify-content: end; column-gap: 8px;">
-								<button class="btn-icon"><span class="material-icons-round">search</span></button>
+								<button class="btn-icon" type="button"><span class="material-icons-round">search</span></button>
 								<input type="text" placeholder="Search To-Do Task by Name" style="width: 220px;">
-								<button class="btn-icon"><span class="material-icons-round">add</span></button>
+								<button class="btn-icon" type="button" id="add-todo-btn"><span class="material-icons-round">add</span></button>
 							</div>
 						</div>
-						<div style="display: flex; flex-direction: column; padding: 10px 30px; row-gap: 20px;">
-							<div class="todo-card">
-								<div style="display: flex; justify-content: space-between; align-items: center;">
-									<div style="display: flex; align-items: center; column-gap: 15px;">
-										<span class="material-icons-round" style="padding: 10px; background-color: #969696;border-radius: 10px;">construction</span>
-										<p style="word-break: break-all;">This is a Task to be completed by:</p>
-									</div>
-									<p style="text-wrap: nowrap; margin-left: 10px;">Wed, 26/Dec</data></p>
-								</div>
-							</div>
-							<div class="todo-card">
-								<div style="display: flex; justify-content: space-between; align-items: center;">
-									<div style="display: flex; align-items: center; column-gap: 15px;">
-										<span class="material-icons-round" style="padding: 10px; background-color: #969696;border-radius: 10px;">construction</span>
-										<p style="word-break: break-all;">completed by:</p>
-									</div>
-									<p style="text-wrap: nowrap; margin-left: 10px;">Wed, 26/Dec</data></p>
-								</div>
-							</div>
+						<!-- 'TODOS CARDS CONTAINER -->
+						<div id="todos-list" class="todo-card-container">
 						</div>
 					</div>
 				</div>

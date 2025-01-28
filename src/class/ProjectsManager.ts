@@ -5,7 +5,7 @@ import { IProject, Project } from "./Project";
 
 // CREATE CLASS PROJECTS MANAGER
 export class ProjectsManager {
-  list: Project[] = []
+  projList: Project[] = []
   ui: HTMLElement
   id: UUIDTypes
 
@@ -18,8 +18,9 @@ export class ProjectsManager {
       status: "Active",
       userRole: "Developer",
       finishDate: new Date(),
-			backColor: "#9f229d"
+			backColor: "#FFA500"
     })
+		console.log("pm class")
   }
 	
 // UPDATE PROJECT DETAILS METHOD
@@ -56,12 +57,13 @@ export class ProjectsManager {
 			this.updateProjectDetails(project)
 		})
     this.ui.append(project.ui)
-    this.list.push(project)
+    this.projList.push(project)
     return project
 	}
 
+// CREATE NEW PROJECT METHOD
   newProject(data: IProject) {
-    const projectNames = this.list.map((project) => {
+    const projectNames = this.projList.map((project) => {
       return project.name
     })
     const nameInUse = projectNames.includes(data.name)
@@ -78,10 +80,11 @@ export class ProjectsManager {
 			this.setDetailsPage(project)
 		})
     this.ui.append(project.ui)
-    this.list.push(project)
+    this.projList.push(project)
     return project
   }
-	
+
+// SET PROJECT INFORMATION ON PROJECT CARD DETAILS PAGE
 	private setDetailsPage(project: Project) {
 		const detailsPage = document.getElementById("project-details")
 		console.log("Project Details Page Loaded")
@@ -91,7 +94,7 @@ export class ProjectsManager {
 	const description = detailsPage.querySelector("[data-project-info='description']")
 	if (description) {description.textContent = project.description}
 	const cardName = detailsPage.querySelector("[data-project-info='card-name']")
-	if (cardName) {cardName.textContent = project.name}
+	if (cardName) {cardName.textContent = project.name}	
 	const cardDescription = detailsPage.querySelector("[data-project-info='card-description']")
 	if (cardDescription) {cardDescription.textContent = project.description}
 	const cardStatus = detailsPage.querySelector("[data-project-info='card-status']")
@@ -113,16 +116,16 @@ export class ProjectsManager {
 	}
 }
 
-// create getProject method
+// GetProject method
 	getProject(id: string) {
-		const project = this.list.find((project) => {
+		const project = this.projList.find((project) => {
 			return project.id === id
 		})
 		return project
 	}
 
 	getProjectByName(name: string) {
-		const project = this.list.find((project) => {
+		const project = this.projList.find((project) => {
 			return project.name === name
 		})
 		return project
@@ -132,7 +135,7 @@ export class ProjectsManager {
 		const detailsPage = document.getElementById("project-details")
     if (!detailsPage) { return }
     const name = detailsPage.querySelector("[data-project-info='name']")
-    const currentProject = this.list.find((project) => {
+    const currentProject = this.projList.find((project) => {
       return project.name === name?.textContent
     })
     if (name && currentProject) { name.textContent = currentProject.name }
@@ -140,7 +143,7 @@ export class ProjectsManager {
   }
 
   calculateTotalCost() {
-    const totalCost = this.list.reduce(
+    const totalCost = this.projList.reduce(
       (acc, project) => {
         return acc + project.cost
       }, 0)
@@ -152,15 +155,15 @@ export class ProjectsManager {
     const project = this.getProject(id)
     if (!project) { return }
     project.ui.remove()
-    const remaining = this.list.filter((project) => {
+    const remaining = this.projList.filter((project) => {
       return project.id !== id
     })
-    this.list = remaining
+    this.projList = remaining
   }
 
 	// EXPORT TO JSON METHOD
   exportToJSON(fileName: string = "projects") {
-    const json = JSON.stringify(this.list, null, 2)
+    const json = JSON.stringify(this.projList, null, 2)
     const blob = new Blob([json], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')

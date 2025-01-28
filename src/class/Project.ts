@@ -17,14 +17,14 @@ export interface IProject {
 }
 
 function nameInitials(name: string) {  
-  const words = name.split(' ')
+	const words = name.match(/\b\w+\b/g) || []
   let initials: string
   if (words.length > 1) {
     initials = words.slice(0, 2)
       .map(word => word.charAt(0).toUpperCase())
       .join('')
   } else {
-    initials = words[0].slice(0, 2).toUpperCase()
+    initials = words[0] ? words[0].slice(0, 2).toUpperCase() : ''
   }
   return initials
 }
