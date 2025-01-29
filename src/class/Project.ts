@@ -6,6 +6,8 @@ import {v4 as uuidv4} from "uuid"
 export type ProjectStatus = "Active" | "inactive" | "Finished" 
 export type UserRole = "Architect" | "Engineer" | "Developer"
 
+const todos = document.getElementById("todos-list")
+
 //CREATE INTERFACE IPROJECT
 export interface IProject {
   name: string 
@@ -17,17 +19,19 @@ export interface IProject {
 }
 
 function nameInitials(name: string) {  
-  const words = name.split(' ')
+	const words = name.match(/\b\w+\b/g) || []
   let initials: string
   if (words.length > 1) {
     initials = words.slice(0, 2)
       .map(word => word.charAt(0).toUpperCase())
       .join('')
   } else {
-    initials = words[0].slice(0, 2).toUpperCase()
+    initials = words[0] ? words[0].slice(0, 2).toUpperCase() : ''
   }
   return initials
 }
+
+const todosElement = document.getElementById("todos-list")
 
 // CREATE CLASS PROJECT
 export class Project implements IProject {
@@ -45,12 +49,18 @@ export class Project implements IProject {
   progress: number
   id: string
 	nameInitials: string
+	todos: HTMLElement
 
 // CREATE CLASS PROJECT CONSTRUCTOR
   constructor(data: IProject) {
     this.id = uuidv4()
 		this.cost = 2500
 		this.progress = 30
+    if (todosElement) {
+      this.todos = todosElement as HTMLElement
+    } else {
+      throw new Error("Element with id 'todos-list' not found")
+    }
     for (const key in data) {
       this[key] = data[key]
     }
@@ -64,7 +74,6 @@ export class Project implements IProject {
 		this.backColor = this.backColor
     this.ui = document.createElement("div") 
     this.ui.className = "project-card" 
-		//this.ui.id = "proj-card"
     this.ui.innerHTML = `
     <div class="card-header">
       <p style= "display: flex; align-items: center; padding: 8px; border-radius: 100%;	font-size: 20px;
@@ -90,7 +99,6 @@ export class Project implements IProject {
       <div class="card-property">
         <p style="color: #969696;">Estimated Progress</p>
         <p>${this.progress}%</p>
-      </div>
-    </div>`
+			`
   }
 }

@@ -265,11 +265,43 @@ input:focus, textarea:focus, select:focus {
   cursor: pointer;
 }
 
+.todo-card-container {
+	display: flex;
+	flex-direction: column;
+	row-gap: 20px;
+	padding: 10px 30px;
+}
+
 .todo-card {
-  padding: 20px;
+  display: flex;
+	align-items: center;
+	min-height: 50px;
+	max-height: 50px;
   background-color: var(--background-200);
   border-radius: 10px;
   cursor: pointer;
+	
+}
+
+.todo-token-date {
+	display: flex;
+	align-items: center;
+	height: 100%;
+	max-width: 70px;
+	min-width: 70px;
+	font-size: small;
+	justify-content: center;
+	border-top-left-radius: 8px;
+	border-bottom-left-radius: 8px;
+	border-right: solid 5px var(--background-200);
+}
+
+.todo-token-description {
+	text-wrap: width 100px;
+	align-content: center; 
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
 .todo-card:hover {

@@ -1,6 +1,8 @@
 //---------THE PURPOSE OF THIS FILE IS TO INTERACT WITH THE DOM AND TO HANDLE EVENTS----------//
 import { IProject, Project, ProjectStatus, UserRole } from "./class/Project"
 import { ProjectsManager } from "./class/ProjectsManager"
+import { IToDo,TasktStatus, ToDo } from "./class/ToDo"
+import { ToDosManager } from "./class/ToDosManager"
 
 // TOGGLE MODAL FUNCTION
 function toggleModal(id: string, show: boolean) {
@@ -35,20 +37,43 @@ function displayErrorMessage(id: string, message: string) {
 
 // CONSTANT PROJECTSLISTUI
 const projectsListUI = document.getElementById("projects-list") as HTMLElement
+// CONSTANT TODOSLISTUI
+const todosListUI = document.getElementById("todos-list")	as HTMLElement
 
-// CONSTANT PROJECTSMANAGER
-const projectsManager = new ProjectsManager(projectsListUI)
-
-
-// PROJECTS LIST BUTTON EVENT LISTENER
+/*
+const container = document.querySelector(".todo-card-container");
+if (container) {
+	
+//const divs = container.querySelectorAll('div');
+const innerDivs = container.querySelectorAll('p');
+	innerDivs.forEach((innerDiv, innerIndex) => {
+		const content = `Inner Div ${innerIndex + 1} Content: ${innerDiv.textContent}`;
+		//divContent.innerHTML += `<p>${content}</p>`; // Add the content as a paragraph
+		console.log(content)
+		});
+		
+		}
+		*/
+		// CONSTANT PROJECTSMANAGER
+		const projectsManager = new ProjectsManager(projectsListUI)
+		// CONSTANT TODOSMANAGER
+		const todoManager = new ToDosManager(todosListUI)
+		
+// -------------------------------------------PROJECTS LIST BUTTON EVENT LISTENER
 const projectBtn = document.getElementById("project-btn")
 if (projectBtn) {
 	projectBtn.addEventListener("click", () => {
 		const projectsPage = document.getElementById("projects-page")
 		const detailsPage = document.getElementById("project-details")
-		if (!projectsPage || !detailsPage) {return}
-		projectsPage.style.display = "flex"
+		if (!detailsPage) {return}
+		if (projectsPage) {
+			projectsPage.style.display = "flex"
+		} 
 		detailsPage.style.display = "none"
+		const proj = projectsManager.getCurrentProj() as Project
+		projectsManager.updateProject
+		
+		
 		console.log("Project List Page Loaded")
 	})
 } else {
@@ -62,7 +87,7 @@ if (btnEditProject) {
 		console.log("Edit Project Form Loaded")
 		const project = projectsManager.getCurrentProj() as Project
 		const formTitle = editProjectForm?.querySelector("[form-info ='form-title']")
-		if (formTitle) {formTitle.textContent = "Edit " + project.name + " Project"}
+		if (formTitle) {formTitle.textContent = "Edit " + project.name}
 		const finishDate = project?.finishDate ? new Date(project.finishDate).toISOString().split('T')[0] : ''
 		toggleModal("edit-project-modal", true)
 		if (editProjectForm)
@@ -84,9 +109,6 @@ if (btnEditProject) {
 	
 	// EDIT PROJECT FORM EVENT LISTENER
 	const editProjectForm = document.getElementById("edit-project-form")
-	//const projCard = document.getElementById("proj-card") read from index
-	//const projCard = document.getElementById("proj-card") read from projects setui
-	//console.log(projCard)
 	if (editProjectForm && editProjectForm instanceof HTMLFormElement) {
 		editProjectForm.addEventListener("submit", (e) => {
 			e.preventDefault()
@@ -112,6 +134,7 @@ if (btnEditProject) {
 				progress: progress,
 				backColor: formData.get("backcolor") as string,
 				nameInitials:'',
+				todos: todosListUI
 				//ui: projCard as HTMLDivElement,
 				//setUi: () => { editProject }
 			}
@@ -128,7 +151,17 @@ if (btnEditProject) {
 	} else {
 		console.warn("no button found")
 	}
-	
+
+//----------------------NEW TODO BUTTON EVENT LISTENER----------------------//
+const newTodoBtn = document.getElementById("add-todo-btn")
+if (newTodoBtn) {
+	newTodoBtn.addEventListener("click", (e) => {
+		e.preventDefault()
+		console.log("New ToDo Task Form Loaded")
+		toggleModal("new-todo-modal", true)
+	})
+}
+
 // NEW PROJECT BUTTON EVENT LISTENER
 const newProjectBtn = document.getElementById("btn-new-project")
 
@@ -139,7 +172,10 @@ function randomColor() {
 }
 
 if (newProjectBtn) {
-	newProjectBtn.addEventListener("click", () => {
+	newProjectBtn.addEventListener("click", (e) => {
+		e.preventDefault()
+		if(!newProjectBtn) { return }
+		//todoManager.deleteTodoList()
 		console.log("New Project Form Loaded")
 		toggleModal("new-project-modal", true)
 	})
@@ -153,11 +189,6 @@ if (newCancelBtn) {
 	newCancelBtn.addEventListener("click", () => {
 		console.log("New Project Creation Cancelled")
 		toggleModal("new-project-modal", false)
-		if (popupErrMsg) {
-			popupErrMsg.style.display = "none"
-		} else {
-			console.warn("Popup element not found")
-		}
 	})
 } else {
 	console.warn("no button found")
@@ -169,15 +200,23 @@ if (editCancelBtn) {
 	editCancelBtn.addEventListener("click", () => {
 		toggleModal("edit-project-modal", false)
 		console.log("Project Edition Cancelled")
-		if (popupErrMsg) {
-			popupErrMsg.style.display = "none"
-		} else {
-			console.warn("Popup element not found")
-		}
 	})
 } else {
 	console.warn("no button found")
 }
+
+// NEW TODO CANCEL BUTTON EVENT LISTENER
+const todoCancelBtn = document.getElementById("todocancelbutton")
+if (todoCancelBtn) {	
+	todoCancelBtn.addEventListener("click", () => {
+		toggleModal("new-todo-modal", false)
+		console.log("New ToDo Task Addition Cancelled")
+	})
+} else {
+	console.warn("no button found")
+}
+
+// CLOSE POP UP ERROR MESSAGES BUTTON
 const closePopupBtn = document.getElementById("close-popup-btn")
 const popupErrMsg = document.getElementById("err-popup")
 if (closePopupBtn) {
@@ -228,6 +267,31 @@ if (projectForm && projectForm instanceof HTMLFormElement) {
 } else {
 	console.warn("the form does not exist: ", projectForm)
 }
+
+// --------------------------NEW TODO FORM EVENT LISTENER
+const todoForm = document.getElementById("new-todo-form")
+if (todoForm && todoForm instanceof HTMLFormElement) {	
+	todoForm.addEventListener("submit", (e) => {
+		e.preventDefault()
+		const formData = new FormData(todoForm)
+		const finishDateValue = formData.get("todo-finishDate") as string
+		const finishDate = (finishDateValue ? new Date(finishDateValue) : new Date())
+		const todoData: IToDo = {
+			description: formData.get("todo-description") as string,
+			userRole: formData.get("todo-userRole") as UserRole,
+			status: formData.get("todo-status") as TasktStatus,
+			finishDate: finishDate
+		}
+		todoManager.newToDo(todoData)
+		toggleModal("new-todo-modal", false)
+		console.log("ToDo task created Successfully!")
+		todoForm.reset()
+		const fui = document.getElementById("todos-list")
+	})
+} else {
+	console.warn("the form does not exist: ", projectForm)
+}
+
 // EXPORT PROJECTS BUTTON
 const exportProjectBtn = document.getElementById("export-projects-btn")
 if (exportProjectBtn) {
