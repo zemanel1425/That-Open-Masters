@@ -20,11 +20,10 @@ export class ProjectsManager {
       finishDate: new Date(),
 			backColor: "#FFA500"
     })
-		console.log("pm class")
   }
 	
 // UPDATE PROJECT DETAILS METHOD
-	updateProjectDetails(project: Project) {
+		updateProjectDetails(project: Project) {
 		const detailsPage = document.getElementById("project-details")
 		const name = detailsPage?.querySelector("[data-project-info='name']")
 		if (name) {name.textContent = project.name}
@@ -45,7 +44,8 @@ export class ProjectsManager {
 		const cardProgressBar = document.getElementById("progress-bar")
 		if (cardProgressBar) {cardProgressBar.style.width = project.progress.toString() + "%"}
 	}
-	
+
+//UPDATE PROJECT METHOD
 	updateProject (data:IProject) {
     const project = new Project(data)
 		project.ui.addEventListener("click", () => {
@@ -54,7 +54,7 @@ export class ProjectsManager {
 			if (!projectsPage || !detailsPage) {return}
 			projectsPage.style.display = "none"
 			detailsPage.style.display = "flex"
-			this.updateProjectDetails(project)
+			this.setDetailsPage(project)
 		})
     this.ui.append(project.ui)
     this.projList.push(project)

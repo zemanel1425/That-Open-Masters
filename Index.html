@@ -27,7 +27,7 @@
 		</div>
 		<p id="error-container" class="error-message" style="padding: 0 20px 15px 20px; text-align: justify;"></p>				
 	</dialog>
-	<!-----------------------------------NEW TODO MODAL----------------------------->
+	<!--------------------------NEW TODO MODAL----------------------------->
 	<dialog id="new-todo-modal">
 		<form id="new-todo-form">
 			<h2 style="display: flex; align-items: center;">
@@ -35,7 +35,9 @@
 			</h2>	
 			<div class="input-list">
 				<div class="hidden-fields">
-					<input name="todoid" type="text" style="display: block;">
+					todoid<input name="todoid" type="text" style="display: block;">
+					todoprojectid<input name="todoprojectid" type="text" style="display: block;">
+					todoincremental<input name="todoicremental" type="text" style="display: block;">
 				</div>
 				<div class="form-field-container">
 					<label for="todo-description"><span class="material-icons-round">notes</span>Task Description</label>
@@ -113,7 +115,10 @@
 	<!--EDIT PROJECT MODAL-->
 	<dialog id="edit-project-modal">
 		<form id="edit-project-form">
-			<h2 form-info="form-title">Edit Project</h2>
+			<div style="display: flex; align-items: center;	justify-content: flex-start; padding-left: 20px; border-bottom: solid 1px grey;"> 
+				<span class="material-icons-round" style="padding-right: 10px; color: grey; font-size: 30px;">construction</span>
+				<h2 form-info="form-title">Edit Project</h2>
+			</div>
 			<div class="input-list">
 				<div class="hidden-fields">
 					<input name="name" type="text" style="display: none; padding: 0;">
@@ -164,7 +169,7 @@
 	</dialog>
   <main id="content">
 	<!--PROJECTS PAGE-->
-		<div class="page" id="projects-page" style=" border: dashed 2px rgb(207, 62, 22); display: flex;">
+		<div class="page" id="projects-page" style="display: flex;">
 				<header>
 					<h2>Projects</h2>
 					<div style="display: flex; align-items: center;column-gap: 25px;">
@@ -186,7 +191,7 @@
 			<div class="main-page-content">
 				<div id="card-container" style="display: flex; flex-direction: column; row-gap: 30px; width: 475px">
 	<!--PROJECT CARD CONTAINER-->
-					<div id="project-card" class="dashboard-card" style="padding: 30px 0; border: dashed 2px greenyellow; ">
+					<div id="project-card" class="dashboard-card" style="padding: 30px 0;">
 						<div style="display: flex; justify-content: space-between; align-items: center; padding: 0px 30px; margin-bottom: 30px">
 							<p data-project-info="card-initials" style="display: flex; align-items: center; font-size: 20px; font-weight: bold; aspect-ratio: 1; 
 							background-color: orange; border-radius: 100%; padding: 8px;">HC</p>

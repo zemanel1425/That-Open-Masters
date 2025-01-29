@@ -50,9 +50,9 @@ export class ToDo implements IToDo { //!!!!!!!!use ToDo instead of Todo!!!!!!!
     this.ui = document.createElement("div") 
     this.ui.className = "todo-card" 
     this.ui.innerHTML = `
-			<div data-todo-info="todo-date" class="todo-token-date"
-			style="background-color: green;">${d}</div>
-			<div data-todo-info="todo-description" 
-			class="todo-token-description">${this.description}</div>`
+			<p data-todo-info="todo-date" class="todo-token-date"
+			style="background-color: green;">${d}</p>
+			<p data-todo-info="todo-description" 
+			class="todo-token-description">${this.description}</p>`
   }
 }

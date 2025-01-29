@@ -18,30 +18,31 @@ export class ToDosManager {
 			finishDate:  new Date(),
 			status: "Not Started",
 			userRole: "Developer",
-		})
-		console.log("td class")
-		
+		})		
 	}
 //------------------------------------NEW TODO METHOD	
 	newToDo(data: IToDo) {
 		const todo = new ToDo(data)
-		console.log(this.ui)
 		this.ui.append(todo.ui)
     this.todoList.push(todo)
     return todo
-		//this.setToDoContainer(todo)
 	}
 
-	private setToDoContainer (todo: ToDo) {
-		const todoContainer = document.getElementById("todo-card")
-		if(!todoContainer) {return}
-		const todoDescription = todoContainer.querySelector("[data-todo-info='todo-description']")
-		if (todoDescription) {todoDescription.textContent = todo.description}
-		const todoDate = todoContainer.querySelector("[data-todo-info='todo-date']")
-		if (todoDate) {todoContainer.textContent = new Date(todo.finishDate).toDateString().split(' ').slice(1, 3).join(' ')}
-		console.log(todoDate, todoDescription, "from set todo")
+	// GET CURRENT TODO LIST
+	getTodosList (){
+		const todosList = document.getElementById("todos-list")
+		return todosList
+	// DELETE TODO LIST
+	}
+	
+	deleteTodoList () {
+		const todosList = document.getElementById("todos-list")
+		if(todosList) {
+			const childDivs = todosList.querySelectorAll('div')
+			childDivs.forEach(div => div.remove())
+			} else {
+				console.log('Parent div not found')
+				}
 	}
 }
-
-		
 		
