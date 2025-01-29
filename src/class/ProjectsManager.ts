@@ -170,7 +170,7 @@ export class ProjectsManager {
     a.href = url
     a.download = fileName
     a.click()
-    URL.revokeObjectURL(url)
+   	URL.revokeObjectURL(url)
   }
 
 // IMPORT FROM JSON METHOD

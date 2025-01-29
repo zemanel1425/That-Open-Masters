@@ -292,13 +292,25 @@ if (todoForm && todoForm instanceof HTMLFormElement) {
 	console.warn("the form does not exist: ", projectForm)
 }
 
-// EXPORT PROJECTS BUTTON
+// EXPORT BUTTON (PROJECTS AND TODOS)
 const exportProjectBtn = document.getElementById("export-projects-btn")
 if (exportProjectBtn) {
-	exportProjectBtn.addEventListener("click", () => {
-		projectsManager.exportToJSON()
-	})
-}
+	exportProjectBtn.addEventListener("click", (e) => {
+		e.preventDefault
+		const plist = projectsManager.projList
+		const tlist = todoManager.todoList
+		const lst = [plist,tlist]
+			const fileName = "Combined Export"
+			const json = JSON.stringify(lst, null, 2)
+			const blob = new Blob([json], { type: 'application/json' })
+			const url = URL.createObjectURL(blob)
+			const a = document.createElement('a')
+			a.href = url
+			a.download = fileName
+			a.click()
+			 URL.revokeObjectURL(url)		
+		})
+		}
 
 // IMPORT PROJECTS BUTTON
 const importProjectsBtn = document.getElementById("import-projects-btn")
@@ -306,4 +318,61 @@ if (importProjectsBtn) {
 	importProjectsBtn.addEventListener("click", () => {
 		projectsManager.importFromJSON()
 	})
+
+
+// IMPORT FROM JSON METHOD
+/*
+importFromJSON() {
+	const input = document.createElement('input')
+	input.type = 'file'
+	input.accept = 'application/json'
+	const reader = new FileReader()
+	reader.addEventListener("load", () => {
+		const json = reader.result
+		if (!json) { return }
+		const proj = json[0]
+		const tod = json[1]
+		const projects: IProject[] = JSON.parse(proj as string)
+		const todos: IToDo[] = JSON.parse(tod as string)
+		for (const project of projects) {
+			const name = project.name;
+			try {
+				this.newProject(project)
+			} catch (err) {
+				// Function to display error message
+				function displayWarnMsg(message: string) {
+					const errorContainer = document.getElementById("error-container");
+					if (errorContainer) {
+						errorContainer.textContent = message;
+					} else {
+						console.warn("Error container not found")
+					}
+				}
+				displayWarnMsg(`There are projects with identical property "name" in the file you are importing.
+					\n Projets with identical name may not be imported.
+					Please open and review your file to prevent data loss.`);
+				// Display error message
+				const warnMsgModal = document.getElementById("err-popup") as HTMLDialogElement
+				if (warnMsgModal) {
+					warnMsgModal.style.display = "block"
+					warnMsgModal.showModal()
+				} else {
+					console.warn("Popup element not found")
+				}
+			}
+		}
+	})	
+	input.addEventListener('change', () => {
+		const filesList = input.files
+		if (!filesList) { return }
+		reader.readAsText(filesList[0])
+		reader.readAsText(filesList[1])
+	})
+	input.click()
+}
+*/
+
+
+
+
 }
