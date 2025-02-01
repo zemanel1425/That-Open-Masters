@@ -69,11 +69,7 @@ if (projectBtn) {
 		if (projectsPage) {
 			projectsPage.style.display = "flex"
 		} 
-		detailsPage.style.display = "none"
-		const proj = projectsManager.getCurrentProj() as Project
-		projectsManager.updateProject
-		
-		
+		detailsPage.style.display = "none"		
 		console.log("Project List Page Loaded")
 	})
 } else {
@@ -134,7 +130,8 @@ if (btnEditProject) {
 				progress: progress,
 				backColor: formData.get("backcolor") as string,
 				nameInitials:'',
-				todos: todosListUI
+				todos: todosListUI,
+				lastUpdate: new Date()
 				//ui: projCard as HTMLDivElement,
 				//setUi: () => { editProject }
 			}
@@ -147,6 +144,7 @@ if (btnEditProject) {
 			} catch (err) {
 				console.log("this is the error", err)
 			}
+				console.log("🚀 ~ editProjectForm.addEventListener ~ projectData:", projectData)
 		})
 	} else {
 		console.warn("no button found")
@@ -166,7 +164,7 @@ if (newTodoBtn) {
 const newProjectBtn = document.getElementById("btn-new-project")
 
 function randomColor() {
-	const colors = ["#9f351d", "#177a29", "#2f3d7f", "#946a26", "#8236a3", "#ad3e31"];
+	const colors = ["9#f351d", "#177a29", "#2f3d7f", "#946a26", "#8236a3", "#ad3e31"];
 	const randomIndex = Math.floor(Math.random() * 5);
 	return colors[randomIndex];
 }
@@ -247,7 +245,8 @@ if (projectForm && projectForm instanceof HTMLFormElement) {
 			status: formData.get("status") as ProjectStatus,
 			userRole: formData.get("userRole") as UserRole,
 			finishDate: finishDate,
-			backColor: randomColor()
+			backColor: randomColor(),
+			lastUpdate: new Date ()
 		}
 		try {
 			projectsManager.newProject(projectData)
@@ -315,7 +314,8 @@ if (exportProjectBtn) {
 // IMPORT PROJECTS BUTTON
 const importProjectsBtn = document.getElementById("import-projects-btn")
 if (importProjectsBtn) {
-	importProjectsBtn.addEventListener("click", () => {
+	importProjectsBtn.addEventListener("click", (e) => {
+		e.preventDefault()
 		projectsManager.importFromJSON()
 	})
 

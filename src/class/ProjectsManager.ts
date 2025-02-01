@@ -18,7 +18,8 @@ export class ProjectsManager {
       status: "Active",
       userRole: "Developer",
       finishDate: new Date(),
-			backColor: "#FFA500"
+			backColor: "#FFA500",
+			lastUpdate: new Date()
     })
   }
 	
@@ -179,43 +180,74 @@ export class ProjectsManager {
     input.type = 'file'
     input.accept = 'application/json'
     const reader = new FileReader()
+		const importSummary: string[] = []
     reader.addEventListener("load", () => {
-      const json = reader.result
+			const json = reader.result
       if (!json) { return }
-      const projects: IProject[] = JSON.parse(json as string)
+      const projects: Project[] = JSON.parse(json as string)
       for (const project of projects) {
-        const name = project.name;
+				const name = project.name
         try {
-          this.newProject(project)
-        } catch (err) {
-          // Function to display error message
-          function displayWarnMsg(message: string) {
-            const errorContainer = document.getElementById("error-container");
-            if (errorContainer) {
-              errorContainer.textContent = message;
-            } else {
-              console.warn("Error container not found")
-            }
-          }
-          displayWarnMsg(`There are projects with identical property "name" in the file you are importing.
-            \n Projets with identical name may not be imported.
-            Please open and review your file to prevent data loss.`);
-          // Display error message
-          const warnMsgModal = document.getElementById("err-popup") as HTMLDialogElement
-          if (warnMsgModal) {
-            warnMsgModal.style.display = "block"
-            warnMsgModal.showModal()
-          } else {
-            console.warn("Popup element not found")
-          }
-        }
-      }
-    })	
-    input.addEventListener('change', () => {
-      const filesList = input.files
-      if (!filesList) { return }
-      reader.readAsText(filesList[0])
-    })
-    input.click()
-  }
-}
+					this.newProject(project)
+					importSummary.push(`${name} Imported Successfuly`)		
+					console.log(project.name, " Imported Successfuly!")					
+				} catch (err) {
+					console.log(project.name, " name is in use, I will check last update date!")
+						try {
+							const sameNameProject = this.getProjectByName(name)
+							const projectLastUpdate = new Date(sameNameProject?.lastUpdate as Date)						
+							const jsonLastUpdate = new Date(project.lastUpdate as Date).toString()							
+							if(new Date(jsonLastUpdate) > new Date(projectLastUpdate))
+								{
+									this.deleteProject(project.id)
+									this.updateProject(project)									
+									importSummary.push(`${name} Updated Sucessfuly!`);
+									console.log(project.name, " last update is older than json I updated ", project.name)								
+								}
+								else{
+									importSummary.push(`${name} is the latest version available - Import was ignored!`);
+									console.log(project.name, " is the latest version available - Import was ignored!")
+								}							
+							} catch (err) {
+								new Error ("Could not parse JSON")
+								}
+							}
+						}      	
+						const b = this.importJSONLog(importSummary)
+						this.popupInfoMsg(b)
+					})
+					input.addEventListener('change', () => {
+						const filesList = input.files
+						if (!filesList) { return }
+					reader.readAsText(filesList[0])					
+				})
+				input.click()
+			}
+
+// DISPLAY INFORMATION MESSAGE METHOD ------------------------------------------------------------------
+			popupInfoMsg(message: string) {
+				const errorContainer = document.getElementById("error-container") as HTMLParagraphElement
+				if (errorContainer) {
+					const warnMsgModal = document.getElementById("err-popup") as HTMLDialogElement
+					errorContainer.innerHTML = message	
+					if (warnMsgModal) {
+						warnMsgModal.style.display = "block"
+						warnMsgModal.showModal()
+					} else {
+						console.warn("Popup element not found")
+					}
+				} else {
+					console.warn("Error container not found")
+				}
+			}
+
+// IMPORT JSON LOG FILE RESULT SUMMARY METHOD
+			importJSONLog(summary: string[]) {
+				let resultString = ""	
+				summary.forEach(entry => {
+						resultString += entry + "<br>"
+				})
+				console.log(resultString)
+				return resultString
+		}			
+		}

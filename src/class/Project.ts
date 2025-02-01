@@ -6,8 +6,6 @@ import {v4 as uuidv4} from "uuid"
 export type ProjectStatus = "Active" | "inactive" | "Finished" 
 export type UserRole = "Architect" | "Engineer" | "Developer"
 
-const todos = document.getElementById("todos-list")
-
 //CREATE INTERFACE IPROJECT
 export interface IProject {
   name: string 
@@ -16,6 +14,7 @@ export interface IProject {
   userRole: UserRole
   finishDate: Date
 	backColor: string
+	lastUpdate: Date
 }
 
 function nameInitials(name: string) {  
@@ -31,8 +30,6 @@ function nameInitials(name: string) {
   return initials
 }
 
-const todosElement = document.getElementById("todos-list")
-
 // CREATE CLASS PROJECT
 export class Project implements IProject {
 // to satisfy interface
@@ -41,14 +38,15 @@ export class Project implements IProject {
   status: "Active" | "inactive" | "Finished"
   userRole: "Architect" | "Engineer" | "Developer"
   finishDate: Date
-	backColor: string
-
-// class internals
+	lastUpdate: Date
+	
+	// class internals
   ui: HTMLDivElement 
   cost: number
   progress: number
   id: string
 	nameInitials: string
+	backColor: string
 	todos: HTMLElement
 
 // CREATE CLASS PROJECT CONSTRUCTOR
@@ -56,11 +54,7 @@ export class Project implements IProject {
     this.id = uuidv4()
 		this.cost = 2500
 		this.progress = 30
-    if (todosElement) {
-      this.todos = todosElement as HTMLElement
-    } else {
-      throw new Error("Element with id 'todos-list' not found")
-    }
+    
     for (const key in data) {
       this[key] = data[key]
     }
