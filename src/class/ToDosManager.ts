@@ -20,12 +20,18 @@ export class ToDosManager {
 			userRole: "Developer",
 		})		
 	}
-//------------------------------------NEW TODO METHOD	
+//-----------------------------CREATE NEW TODO METHOD	
 	newToDo(data: IToDo) {
 		const todo = new ToDo(data)
+		todo.ui.addEventListener("click", () => {
+			const todoPage = document.getElementById("todo-card")
+			if (todoPage) {
+				todoPage.style.display = "block"
+			}
+		})
 		this.ui.append(todo.ui)
     this.todoList.push(todo)
-    return todo
+    this.changeColorByStatus()
 	}
 
 	// GET CURRENT TODO LIST
@@ -58,7 +64,25 @@ export class ToDosManager {
 	}
 
 	// CHANGE TODO COLOR STATUS
-	changeColorByStatus(){
+	changeColorByStatus() {
+		const todoCards = document.querySelectorAll('.todo-card');
+		todoCards.forEach(card => {
+				const statusElement = card.querySelector('.todo-token-status');
+				const status = statusElement && statusElement.textContent ? statusElement.textContent.trim().toLowerCase() : '';
+				const dateElement = card.querySelector('.todo-token-date');
+				if (dateElement)
+				if (status === 'not started') {
+						(dateElement as HTMLElement).style.backgroundColor = 'red';
+				} else if (status === 'in progress') {
+						(dateElement as HTMLElement).style.backgroundColor = 'orange';
+				} else {
+						(dateElement as HTMLElement).style.backgroundColor = 'green';
+				}
+			});
+		}
 		
-	}
+    /*
+        
+		*/
+
 }

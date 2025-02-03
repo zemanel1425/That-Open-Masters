@@ -144,7 +144,6 @@ if (btnEditProject) {
 			} catch (err) {
 				console.log("this is the error", err)
 			}
-				console.log("🚀 ~ editProjectForm.addEventListener ~ projectData:", projectData)
 		})
 	} else {
 		console.warn("no button found")
@@ -173,7 +172,6 @@ if (newProjectBtn) {
 	newProjectBtn.addEventListener("click", (e) => {
 		e.preventDefault()
 		if(!newProjectBtn) { return }
-		//todoManager.deleteTodoList()
 		console.log("New Project Form Loaded")
 		toggleModal("new-project-modal", true)
 	})

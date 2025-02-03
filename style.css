@@ -304,6 +304,10 @@ input:focus, textarea:focus, select:focus {
 	text-overflow: ellipsis;
 }
 
+.todo-token-status {
+	text-wrap: width 100px;
+}
+
 .todo-card:hover {
   background-color: var(--primary);
 }

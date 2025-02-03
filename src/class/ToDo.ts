@@ -41,18 +41,13 @@ export class ToDo implements IToDo { //!!!!!!!!use ToDo instead of Todo!!!!!!!
 
 // CREATE CLASS PROJECT METHOD SET UI
   setUi () {
-    if (this.ui && this.ui instanceof HTMLElement || this.description.length < 0)
-			console.log("stop at stui")
+    if (this.ui && this.ui instanceof HTMLElement || this.description.length < 0) {return}
 		const d = this.finishDate.toDateString().split(' ').slice(1, 3).join(' ');
-
-//		const finishDate = (finishDateValue ? new Date(finishDateValue) : new Date())
-		
     this.ui = document.createElement("div") 
-    this.ui.className = "todo-card" 
+    this.ui.className = "todo-card"
     this.ui.innerHTML = `
-			<p data-todo-info="todo-date" class="todo-token-date"
-			style="background-color: green;">${d}</p>
-			<p data-todo-info="todo-description" 
-			class="todo-token-description">${this.description}</p>`
+			<p data-todo-info="todo-date" class="todo-token-date">${d}</p>
+			<p data-todo-info="todo-description"	class="todo-token-description">${this.description}</p>
+			<p data-todo-info="todo-status"	class="todo-token-status" style="display: none">${this.status}</p>`
   }
 }

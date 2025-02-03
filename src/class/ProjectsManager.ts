@@ -2,6 +2,7 @@
 //---------------------see reference file M2 L3.1-------------------------//
 import { UUIDTypes } from "uuid";
 import { IProject, Project } from "./Project";
+import { ToDosManager } from "./ToDosManager";
 
 // CREATE CLASS PROJECTS MANAGER
 export class ProjectsManager {
@@ -46,7 +47,7 @@ export class ProjectsManager {
 		if (cardProgressBar) {cardProgressBar.style.width = project.progress.toString() + "%"}
 	}
 
-//UPDATE PROJECT METHOD
+// UPDATE PROJECT METHOD
 	updateProject (data:IProject) {
     const project = new Project(data)
 		project.ui.addEventListener("click", () => {
