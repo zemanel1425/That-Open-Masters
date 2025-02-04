@@ -35,30 +35,18 @@ function displayErrorMessage(id: string, message: string) {
 	}
 }
 
+
+
+
 // CONSTANT PROJECTSLISTUI
 const projectsListUI = document.getElementById("projects-list") as HTMLElement
 // CONSTANT TODOSLISTUI
 const todosListUI = document.getElementById("todos-list")	as HTMLElement
+// CONSTANT PROJECTSMANAGER
+const projectsManager = new ProjectsManager(projectsListUI)
+// CONSTANT TODOSMANAGER
+const todoManager = new ToDosManager(todosListUI)
 
-/*
-const container = document.querySelector(".todo-card-container");
-if (container) {
-	
-//const divs = container.querySelectorAll('div');
-const innerDivs = container.querySelectorAll('p');
-	innerDivs.forEach((innerDiv, innerIndex) => {
-		const content = `Inner Div ${innerIndex + 1} Content: ${innerDiv.textContent}`;
-		//divContent.innerHTML += `<p>${content}</p>`; // Add the content as a paragraph
-		console.log(content)
-		});
-		
-		}
-		*/
-		// CONSTANT PROJECTSMANAGER
-		const projectsManager = new ProjectsManager(projectsListUI)
-		// CONSTANT TODOSMANAGER
-		const todoManager = new ToDosManager(todosListUI)
-		
 // -------------------------------------------PROJECTS LIST BUTTON EVENT LISTENER
 const projectBtn = document.getElementById("project-btn")
 if (projectBtn) {
@@ -103,6 +91,7 @@ if (btnEditProject) {
 		console.warn("no button found")
 	}
 	
+	
 	// EDIT PROJECT FORM EVENT LISTENER
 	const editProjectForm = document.getElementById("edit-project-form")
 	if (editProjectForm && editProjectForm instanceof HTMLFormElement) {
@@ -144,7 +133,6 @@ if (btnEditProject) {
 			} catch (err) {
 				console.log("this is the error", err)
 			}
-				console.log("🚀 ~ editProjectForm.addEventListener ~ projectData:", projectData)
 		})
 	} else {
 		console.warn("no button found")
@@ -164,7 +152,7 @@ if (newTodoBtn) {
 const newProjectBtn = document.getElementById("btn-new-project")
 
 function randomColor() {
-	const colors = ["9#f351d", "#177a29", "#2f3d7f", "#946a26", "#8236a3", "#ad3e31"];
+	const colors = ["#42f54e", "#177a29", "#2f3d7f", "#946a26", "#8236a3", "#ad3e31"];
 	const randomIndex = Math.floor(Math.random() * 5);
 	return colors[randomIndex];
 }
@@ -173,7 +161,6 @@ if (newProjectBtn) {
 	newProjectBtn.addEventListener("click", (e) => {
 		e.preventDefault()
 		if(!newProjectBtn) { return }
-		//todoManager.deleteTodoList()
 		console.log("New Project Form Loaded")
 		toggleModal("new-project-modal", true)
 	})
@@ -209,6 +196,17 @@ if (todoCancelBtn) {
 	todoCancelBtn.addEventListener("click", () => {
 		toggleModal("new-todo-modal", false)
 		console.log("New ToDo Task Addition Cancelled")
+	})
+} else {
+	console.warn("no button found")
+}
+
+// EDIT TODO CANCEL BUTTON EVENT LISTENER
+const editToDoCancelBtn = document.getElementById("edittodocancelbutton")
+if (editToDoCancelBtn) {	
+	editToDoCancelBtn.addEventListener("click", () => {
+		toggleModal("edit-todo-modal", false)
+		console.log("ToDo Task Edition Cancelled")
 	})
 } else {
 	console.warn("no button found")
@@ -279,13 +277,38 @@ if (todoForm && todoForm instanceof HTMLFormElement) {
 			description: formData.get("todo-description") as string,
 			userRole: formData.get("todo-userRole") as UserRole,
 			status: formData.get("todo-status") as TasktStatus,
-			finishDate: finishDate
+			finishDate: finishDate,
 		}
 		todoManager.newToDo(todoData)
 		toggleModal("new-todo-modal", false)
 		console.log("ToDo task created Successfully!")
 		todoForm.reset()
-		const fui = document.getElementById("todos-list")
+	})
+} else {
+	console.warn("the form does not exist: ", projectForm)
+}
+
+
+// --------------------------EDIT TODO FORM EVENT LISTENER
+const editToDoForm = document.getElementById("edit-todo-form")
+if (editToDoForm && editToDoForm instanceof HTMLFormElement) {	
+	editToDoForm.addEventListener("submit", (e) => {
+		e.preventDefault()
+		const formData = new FormData(editToDoForm)
+		const finishDateValue = formData.get("edit-todo-finishDate") as string
+		const finishDate = (finishDateValue ? new Date(finishDateValue) : new Date())
+		const id = formData.get("edit-todoid") as string
+		const todoData: IToDo = {
+			description: formData.get("edit-todo-description") as string,
+			userRole: formData.get("edit-todo-userRole") as UserRole,
+			status: formData.get("edit-todo-status") as TasktStatus,
+			finishDate: finishDate,
+		}
+		todoManager.newToDo(todoData)
+		toggleModal("edit-todo-modal", false)
+		//console.log("ToDo task created Successfully!")
+		todoManager.deleteTodo(id)
+		editToDoForm.reset()
 	})
 } else {
 	console.warn("the form does not exist: ", projectForm)
@@ -318,61 +341,6 @@ if (importProjectsBtn) {
 		e.preventDefault()
 		projectsManager.importFromJSON()
 	})
-
-
-// IMPORT FROM JSON METHOD
-/*
-importFromJSON() {
-	const input = document.createElement('input')
-	input.type = 'file'
-	input.accept = 'application/json'
-	const reader = new FileReader()
-	reader.addEventListener("load", () => {
-		const json = reader.result
-		if (!json) { return }
-		const proj = json[0]
-		const tod = json[1]
-		const projects: IProject[] = JSON.parse(proj as string)
-		const todos: IToDo[] = JSON.parse(tod as string)
-		for (const project of projects) {
-			const name = project.name;
-			try {
-				this.newProject(project)
-			} catch (err) {
-				// Function to display error message
-				function displayWarnMsg(message: string) {
-					const errorContainer = document.getElementById("error-container");
-					if (errorContainer) {
-						errorContainer.textContent = message;
-					} else {
-						console.warn("Error container not found")
-					}
-				}
-				displayWarnMsg(`There are projects with identical property "name" in the file you are importing.
-					\n Projets with identical name may not be imported.
-					Please open and review your file to prevent data loss.`);
-				// Display error message
-				const warnMsgModal = document.getElementById("err-popup") as HTMLDialogElement
-				if (warnMsgModal) {
-					warnMsgModal.style.display = "block"
-					warnMsgModal.showModal()
-				} else {
-					console.warn("Popup element not found")
-				}
-			}
-		}
-	})	
-	input.addEventListener('change', () => {
-		const filesList = input.files
-		if (!filesList) { return }
-		reader.readAsText(filesList[0])
-		reader.readAsText(filesList[1])
-	})
-	input.click()
-}
-*/
-
-
 
 
 }

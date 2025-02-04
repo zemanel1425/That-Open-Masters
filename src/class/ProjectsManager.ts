@@ -3,6 +3,7 @@
 import { UUIDTypes } from "uuid";
 import { IProject, Project } from "./Project";
 
+
 // CREATE CLASS PROJECTS MANAGER
 export class ProjectsManager {
   projList: Project[] = []
@@ -46,7 +47,7 @@ export class ProjectsManager {
 		if (cardProgressBar) {cardProgressBar.style.width = project.progress.toString() + "%"}
 	}
 
-//UPDATE PROJECT METHOD
+// UPDATE PROJECT METHOD
 	updateProject (data:IProject) {
     const project = new Project(data)
 		project.ui.addEventListener("click", () => {
@@ -189,8 +190,8 @@ export class ProjectsManager {
 				const name = project.name
         try {
 					this.newProject(project)
-					importSummary.push(`${name} Imported Successfuly`)		
-					console.log(project.name, " Imported Successfuly!")					
+					importSummary.push(`${name} Imported Successfully!`)		
+					console.log(project.name, " Imported Successfully!")					
 				} catch (err) {
 					console.log(project.name, " name is in use, I will check last update date!")
 						try {
@@ -201,11 +202,11 @@ export class ProjectsManager {
 								{
 									this.deleteProject(project.id)
 									this.updateProject(project)									
-									importSummary.push(`${name} Updated Sucessfuly!`);
+									importSummary.push(`${name} Updated Successfully!`);
 									console.log(project.name, " last update is older than json I updated ", project.name)								
 								}
 								else{
-									importSummary.push(`${name} is the latest version available - Import was ignored!`);
+									importSummary.push(`${name} Import was ignored!`);
 									console.log(project.name, " is the latest version available - Import was ignored!")
 								}							
 							} catch (err) {
@@ -245,7 +246,7 @@ export class ProjectsManager {
 			importJSONLog(summary: string[]) {
 				let resultString = ""	
 				summary.forEach(entry => {
-						resultString += entry + "<br>"
+						resultString += entry + "<br>" +'\n'
 				})
 				console.log(resultString)
 				return resultString

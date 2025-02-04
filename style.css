@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
+
 :root {
   --primary: #029AE0;
   --primary-100: #073044;
@@ -302,6 +303,10 @@ input:focus, textarea:focus, select:focus {
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
+}
+
+.todo-token-status {
+	text-wrap: width 100px;
 }
 
 .todo-card:hover {

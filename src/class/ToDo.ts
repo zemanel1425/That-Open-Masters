@@ -6,6 +6,7 @@ import {UserRole} from "./Project.ts"
 //CREATE CUSTOM DATA TYPES
 export type TasktStatus = "Not Started" | "In Progress" | "Completed" 
 
+
 //CREATE INTERFACE ITODO
 export interface IToDo {
 	description: string
@@ -22,11 +23,10 @@ export class ToDo implements IToDo { //!!!!!!!!use ToDo instead of Todo!!!!!!!
 	status: "Not Started" | "In Progress" | "Completed"
 	userRole: UserRole
 	finishDate: Date
-
+	
 	// class internals
-  ui: HTMLDivElement 
   id: string
-	incremental: string
+  ui: HTMLDivElement 
 
 // CREATE CLASS PROJECT CONSTRUCTOR
   constructor(data: IToDo) {
@@ -41,18 +41,14 @@ export class ToDo implements IToDo { //!!!!!!!!use ToDo instead of Todo!!!!!!!
 
 // CREATE CLASS PROJECT METHOD SET UI
   setUi () {
-    if (this.ui && this.ui instanceof HTMLElement || this.description.length < 0)
-			console.log("stop at stui")
+    if (this.ui && this.ui instanceof HTMLElement || this.description.length < 0) {return}
 		const d = this.finishDate.toDateString().split(' ').slice(1, 3).join(' ');
-
-//		const finishDate = (finishDateValue ? new Date(finishDateValue) : new Date())
-		
     this.ui = document.createElement("div") 
-    this.ui.className = "todo-card" 
+    this.ui.className = "todo-card"
     this.ui.innerHTML = `
-			<p data-todo-info="todo-date" class="todo-token-date"
-			style="background-color: green;">${d}</p>
-			<p data-todo-info="todo-description" 
-			class="todo-token-description">${this.description}</p>`
+			<p data-todo-info="todo-date" class="todo-token-date">${d}</p>
+			<p data-todo-info="todo-description"	class="todo-token-description">${this.description}</p>
+			<p data-todo-info="todo-status"	class="todo-token-status" style="display: none">${this.status}</p>
+			<p data-todo-info="todo-id"	class="todo-token-id" style="display: none">${this.id}</p>`
   }
 }

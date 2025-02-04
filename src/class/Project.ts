@@ -48,6 +48,7 @@ export class Project implements IProject {
 	nameInitials: string
 	backColor: string
 	todos: HTMLElement
+	
 
 // CREATE CLASS PROJECT CONSTRUCTOR
   constructor(data: IProject) {

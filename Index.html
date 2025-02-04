@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+	
 	<!--SIDEBAR-->
   <aside id="sidebar">
 		<img id="company-logo" src="./Assets/company-logo.svg" alt="Construction Company">
@@ -35,9 +36,7 @@
 			</h2>	
 			<div class="input-list">
 				<div class="hidden-fields">
-					todoid<input name="todoid" type="text" style="display: block;">
-					todoprojectid<input name="todoprojectid" type="text" style="display: block;">
-					todoincremental<input name="todoicremental" type="text" style="display: block;">
+					<input name="todoid" type="text" style="display: none;">
 				</div>
 				<div class="form-field-container">
 					<label for="todo-description"><span class="material-icons-round">notes</span>Task Description</label>
@@ -66,6 +65,47 @@
 					<div style="display: flex; margin: 10px 0px 10px auto; column-gap: 10px;">
 						<button id="todocancelbutton" type="button" style="background-color: transparent;">Cancel</button>
 						<button type="submit" style="background-color: #128944;">Save</button>
+					</div>
+				</div>
+			</form>
+	</dialog>
+	<!--------------------------EDIT TODO MODAL----------------------------->
+	<dialog id="edit-todo-modal">
+		<form id="edit-todo-form">
+			<h2 style="display: flex; align-items: center;">
+				<span class="material-icons-round" style="padding-right: 20px;">construction</span>Edit ToDo Task
+			</h2>	
+			<div class="input-list">
+				<div class="hidden-fields">
+					<input name="edit-todoid" type="text" style="display: none;">
+				</div>
+				<div class="form-field-container">
+					<label for="edit-todo-description"><span class="material-icons-round">notes</span>Task Description</label>
+					<textarea name="edit-todo-description" cols="30" rows="5" placeholder="Provide a clear concise task description"></textarea>
+				</div>
+				<div class="form-field-container">
+					<label for="edit-todo-userRole"><span class="material-icons-round">account_circle</span>Assigned Role</label>
+					<select name="edit-todo-userRole">
+						<option>Architect</option>
+						<option>Engineer</option>
+						<option>Developer</option>
+					</select>
+				</div>
+				<div class="form-field-container">
+					<label for="edit-todo-status"><span class="material-icons-round">not_listed_location</span>Task Status</label>
+					<select name="edit-todo-status">
+						<option>Not Started</option>
+						<option>In Progress</option>
+						<option>Completed</option>
+					</select>
+				</div>
+				<div class="form-field-container">
+					<label for="edit-todo-finishDate"><span class="material-icons-round">calendar_month</span>Completion Date</label>
+						<input name="edit-todo-finishDate" type="date" id="finishDate"></input>			
+					</div>					
+					<div style="display: flex; margin: 10px 0px 10px auto; column-gap: 10px;">
+						<button id="edittodocancelbutton" type="button" style="background-color: transparent;">Cancel</button>
+						<button type="editsubmit" style="background-color: #128944;">Save</button>
 					</div>
 				</div>
 			</form>
@@ -191,7 +231,7 @@
 			<div class="main-page-content">
 				<div id="card-container" style="display: flex; flex-direction: column; row-gap: 30px; width: 475px">
 	<!--PROJECT CARD CONTAINER-->
-					<div id="project-card" class="dashboard-card" style="padding: 30px 0;">
+					<div id="project-card" type="button" class="dashboard-card" style="padding: 30px 0;">
 						<div style="display: flex; justify-content: space-between; align-items: center; padding: 0px 30px; margin-bottom: 30px">
 							<p data-project-info="card-initials" style="display: flex; align-items: center; font-size: 20px; font-weight: bold; aspect-ratio: 1; 
 							background-color: orange; border-radius: 100%; padding: 8px;">HC</p>
@@ -233,7 +273,7 @@
 						<div style="padding: 20px 30px; display: flex; align-items: center; justify-content: space-between;">
 							<h4 style="width: 20%;">To-Do</h4>
 							<div style="display: flex; align-items: center;justify-content: end; column-gap: 8px;">
-								<button class="btn-icon" type="button"><span class="material-icons-round">search</span></button>
+								<button id="btn" class="btn-icon" type="button"><span class="material-icons-round">search</span></button>
 								<input type="text" placeholder="Search To-Do Task by Name" style="width: 220px;">
 								<button class="btn-icon" type="button" id="add-todo-btn"><span class="material-icons-round">add</span></button>
 							</div>
