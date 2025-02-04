@@ -20,28 +20,37 @@ export class ToDosManager {
 			userRole: "Developer",
 		})		
 	}
+
+// UPDATE TODO METHOD
+	updateToDo (data:IToDo) {
+
+	}
+
 //-----------------------------CREATE NEW TODO METHOD	
 	newToDo(data: IToDo) {
 		const todo = new ToDo(data)
 		todo.ui.addEventListener("click", () => {
-			const todoPage = document.getElementById("todo-card")
-			if (todoPage) {
-				todoPage.style.display = "block"
+			const todoCard = document.getElementById("todo-card")
+			if (todoCard) {
+				todoCard.style.display = "block"
 			}
 		})
 		this.ui.append(todo.ui)
     this.todoList.push(todo)
     this.changeColorByStatus()
 	}
+	
+	//-----------------------------EDIT TODO METHOD	
+
 
 	// GET CURRENT TODO LIST
 	getTodosList (){
 		const todosList = document.getElementById("todos-list")
 		return todosList
-	// DELETE TODO LIST
 	}
-	
-	deleteTodoList () {
+
+	// DELETE TODO LIST
+		deleteTodoList () {
 		const todosList = document.getElementById("todos-list")
 		if(todosList) {
 			const childDivs = todosList.querySelectorAll('div')
@@ -78,11 +87,47 @@ export class ToDosManager {
 				} else {
 						(dateElement as HTMLElement).style.backgroundColor = 'green';
 				}
+				card.addEventListener('click', (event) => {
+					const id = card.querySelector('.todo-token-id')?.textContent || '';
+					console.log(`this card id: ${id}`);
+					if (id) {
+						const todo = this.getTodoById(id);
+						const finishDate = todo?.finishDate ? new Date(todo.finishDate).toISOString().split('T')[0] : ''
+						const todoModal = document.getElementById("edit-todo-modal");
+						const todoForm = document.getElementById("edit-todo-form")
+						if (todoModal && todoModal instanceof HTMLDialogElement) {
+							todoModal.showModal();
+							if (todoForm) {
+								if (todo) {
+									todoForm["edit-todo-description"].value = todo.description;
+									todoForm["edit-todo-userRole"].value = todo.userRole;
+									todoForm["edit-todo-status"].value = todo.status;
+									todoForm["edit-todo-finishDate"].value = finishDate;
+									todoForm["edit-todoid"].value = todo.id;
+								}
+							}
+						}
+					}
+				});
 			});
 		}
+
+		getTodoById(id:string) {
+			const todo = this.todoList.find((todo) => {
+				return todo.id === id
+			})
+			return todo
+		}
 		
-    /*
-        
-		*/
+		// DELETE PROJECT METHOD
+		deleteTodo(id: string) {
+			const todo = this.getTodoById(id)
+			if (!todo) { return }
+			todo.ui.remove()
+			const remaining = this.todoList.filter((todo) => {
+				return todo.id !== id
+			})
+			this.todoList = remaining
+		}
 
 }

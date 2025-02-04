@@ -22,11 +22,10 @@ export class ToDo implements IToDo { //!!!!!!!!use ToDo instead of Todo!!!!!!!
 	status: "Not Started" | "In Progress" | "Completed"
 	userRole: UserRole
 	finishDate: Date
-
+	
 	// class internals
-  ui: HTMLDivElement 
   id: string
-	incremental: string
+  ui: HTMLDivElement 
 
 // CREATE CLASS PROJECT CONSTRUCTOR
   constructor(data: IToDo) {
@@ -48,6 +47,7 @@ export class ToDo implements IToDo { //!!!!!!!!use ToDo instead of Todo!!!!!!!
     this.ui.innerHTML = `
 			<p data-todo-info="todo-date" class="todo-token-date">${d}</p>
 			<p data-todo-info="todo-description"	class="todo-token-description">${this.description}</p>
-			<p data-todo-info="todo-status"	class="todo-token-status" style="display: none">${this.status}</p>`
+			<p data-todo-info="todo-status"	class="todo-token-status" style="display: none">${this.status}</p>
+			<p data-todo-info="todo-id"	class="todo-token-id" style="display: none">${this.id}</p>`
   }
 }
