@@ -288,6 +288,7 @@ if (todoForm && todoForm instanceof HTMLFormElement) {
 	console.warn("the form does not exist: ", projectForm)
 }
 
+
 // --------------------------EDIT TODO FORM EVENT LISTENER
 const editToDoForm = document.getElementById("edit-todo-form")
 if (editToDoForm && editToDoForm instanceof HTMLFormElement) {	

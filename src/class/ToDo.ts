@@ -6,6 +6,7 @@ import {UserRole} from "./Project.ts"
 //CREATE CUSTOM DATA TYPES
 export type TasktStatus = "Not Started" | "In Progress" | "Completed" 
 
+
 //CREATE INTERFACE ITODO
 export interface IToDo {
 	description: string

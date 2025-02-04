@@ -71,6 +71,7 @@ export class ToDosManager {
 		a.click()
 		URL.revokeObjectURL(url)
 	}
+	
 
 	// CHANGE TODO COLOR STATUS
 	changeColorByStatus() {
