@@ -57,7 +57,7 @@ if (projectBtn) {
 		if (projectsPage) {
 			projectsPage.style.display = "flex"
 		} 
-		detailsPage.style.display = "none"		
+		detailsPage.style.display = "none"	
 		console.log("Project List Page Loaded")
 	})
 } else {
@@ -91,6 +91,8 @@ if (btnEditProject) {
 		console.warn("no button found")
 	}
 	
+
+	
 	
 	// EDIT PROJECT FORM EVENT LISTENER
 	const editProjectForm = document.getElementById("edit-project-form")
@@ -108,7 +110,7 @@ if (btnEditProject) {
 					return
 				}
 			}
-			const projectData: Project = {
+				const projectData: Project = {
 				name: formData.get("name") as string,
 				description: formData.get("description") as string,
 				status: formData.get("status") as ProjectStatus,
@@ -120,14 +122,13 @@ if (btnEditProject) {
 				backColor: formData.get("backcolor") as string,
 				nameInitials:'',
 				todos: todosListUI,
-				lastUpdate: new Date()
-				//ui: projCard as HTMLDivElement,
-				//setUi: () => { editProject }
+				lastUpdate: new Date(),
 			}
+			
 			projectsManager.deleteProject(projectData.id)
+			projectsManager.updateProject(projectData)
 			try {
 				projectsManager.updateProjectDetails(projectData)
-				projectsManager.updateProject(projectData)
 				console.log("Project Information Updated Successfuly!")
 				toggleModal("edit-project-modal", false)
 			} catch (err) {
@@ -279,10 +280,17 @@ if (todoForm && todoForm instanceof HTMLFormElement) {
 			status: formData.get("todo-status") as TasktStatus,
 			finishDate: finishDate,
 		}
-		todoManager.newToDo(todoData)
-		toggleModal("new-todo-modal", false)
-		console.log("ToDo task created Successfully!")
-		todoForm.reset()
+		try{
+			todoManager.newToDo(todoData)
+			toggleModal("new-todo-modal", false)
+			console.log("ToDo task created Successfully!")
+			todoForm.reset()
+		} catch (err) {
+			const description = formData.get("todo-description") as string
+			if (description.length === 0) {
+				displayErrorMessage("err-popup", `To-Do Description must not be empty`)
+			}
+			}
 	})
 } else {
 	console.warn("the form does not exist: ", projectForm)
@@ -304,11 +312,18 @@ if (editToDoForm && editToDoForm instanceof HTMLFormElement) {
 			status: formData.get("edit-todo-status") as TasktStatus,
 			finishDate: finishDate,
 		}
-		todoManager.newToDo(todoData)
-		toggleModal("edit-todo-modal", false)
-		//console.log("ToDo task created Successfully!")
-		todoManager.deleteTodo(id)
-		editToDoForm.reset()
+		try{
+			todoManager.newToDo(todoData)
+			toggleModal("edit-todo-modal", false)
+			console.log("ToDo task Updated Successfully!")
+			todoManager.deleteTodo(id)
+			editToDoForm.reset()
+		} catch (err) {
+			const description = formData.get("edit-todo-description") as string
+			if (description.length === 0) {
+				displayErrorMessage("err-popup", `To-Do Description must not be empty`)
+			}
+			}
 	})
 } else {
 	console.warn("the form does not exist: ", projectForm)

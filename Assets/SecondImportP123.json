@@ -1,0 +1,44 @@
+[
+	{
+		"id": "123397f7-ce95-4fe3-a368-c5954816f936",
+		"cost": 2500,
+		"progress": 30,
+		"name": "Project 1",
+		"description": "Sample Project Description",
+		"status": "Active",
+		"userRole": "Developer",
+		"finishDate": "2025-01-31T14:42:02.899Z",
+		"backColor": "#cc00",
+		"lastUpdate": "2025-01-31T14:42:02.899Z",
+		"nameInitials": "P1",
+		"ui": {}
+	},
+	{
+		"id": "123397f7-ce95-4fe3-a368-c5954816f937",
+		"cost": 2500,
+		"progress": 30,
+		"name": "Project 2",
+		"description": "Sample Project Description",
+		"status": "Active",
+		"userRole": "Developer",
+		"finishDate": "2025-01-31T14:42:02.899Z",
+		"backColor": "#cc99",
+		"lastUpdate": "2026-01-31T14:42:02.899Z",
+		"nameInitials": "P2",
+		"ui": {}
+	},
+	{
+		"id": "123397f7-ce95-4fe3-a368-c5954816f938",
+		"cost": 2500,
+		"progress": 30,
+		"name": "Project 3",
+		"description": "Sample Project Description",
+		"status": "Active",
+		"userRole": "Developer",
+		"finishDate": "2025-01-31T14:42:02.899Z",
+		"backColor": "#0000ff",
+		"lastUpdate": "2025-01-31T14:42:02.899Z",
+		"nameInitials": "P3",
+		"ui": {}
+	}
+]
