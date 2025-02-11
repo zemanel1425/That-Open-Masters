@@ -7,7 +7,7 @@ export class ProjectsManager {
 
   constructor(container: HTMLElement) {
     this.ui = container;
-    this.newProject({
+    const project = this.newProject({
 			id: "SampleProjectId",
       name: "Sample Project",
       description: "Sample Project Description",
@@ -18,7 +18,8 @@ export class ProjectsManager {
 			progress: 30,
       backColor: "orange",
       lastUpdate: new Date(),
-    });
+    })
+		project.ui.click() //<<<<<< delete after some time
   }
 
   // Method to update project details on the details page

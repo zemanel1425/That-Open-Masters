@@ -5,15 +5,15 @@ export type UserRole = "Architect" | "Engineer" | "Developer";
 // Interface for Project
 export interface IProject {
 	id: string;
-  name: string;
-  description: string;
-  userRole: UserRole;
-  status: ProjectStatus;
-  finishDate: Date;
+	name: string;
+	description: string;
+	userRole: UserRole;
+	status: ProjectStatus;
+	finishDate: Date;
 	cost: number;
 	progress: number;
-  backColor: string;
-  lastUpdate: Date;
+	backColor: string;
+	lastUpdate: Date;
 }
 
 // Utility function to get name initials
@@ -26,19 +26,18 @@ function nameInitials(name: string): string {
 
 // Class for Project
 export class Project implements IProject {
-  id: string;
-  name: string;
-  description: string;
-  userRole: UserRole;
-  status: ProjectStatus;
-  finishDate: Date;
-  cost: number;
-  progress: number;
-  backColor: string;
-  lastUpdate: Date;
-  ui: HTMLDivElement;
-  nameInitials: string;
-  todos: HTMLElement;
+	id: string;
+	name: string;
+	description: string;
+	userRole: UserRole;
+	status: ProjectStatus;
+	finishDate: Date;
+	cost: number;
+	progress: number;
+	backColor: string;
+	lastUpdate: Date;
+	ui: HTMLDivElement;
+	nameInitials: string;
 
   constructor(data: IProject) {
     Object.assign(this, data); // Assigning all properties from the data to the class
