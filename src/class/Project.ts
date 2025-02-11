@@ -1,16 +1,17 @@
-import { v4 as uuidv4 } from "uuid";
-
 // Custom data types
 export type ProjectStatus = "Active" | "Inactive" | "Finished";
 export type UserRole = "Architect" | "Engineer" | "Developer";
 
 // Interface for Project
 export interface IProject {
+	id: string;
   name: string;
   description: string;
   userRole: UserRole;
   status: ProjectStatus;
   finishDate: Date;
+	cost: number;
+	progress: number;
   backColor: string;
   lastUpdate: Date;
 }
@@ -25,22 +26,21 @@ function nameInitials(name: string): string {
 
 // Class for Project
 export class Project implements IProject {
+  id: string;
   name: string;
   description: string;
-  status: ProjectStatus;
   userRole: UserRole;
+  status: ProjectStatus;
   finishDate: Date;
+  cost: number;
+  progress: number;
+  backColor: string;
   lastUpdate: Date;
   ui: HTMLDivElement;
-  cost: number = 2500;
-  progress: number = 30;
-  id: string;
   nameInitials: string;
-  backColor: string;
   todos: HTMLElement;
 
   constructor(data: IProject) {
-    this.id = uuidv4();
     Object.assign(this, data); // Assigning all properties from the data to the class
     this.nameInitials = nameInitials(this.name);
     this.setUi();
