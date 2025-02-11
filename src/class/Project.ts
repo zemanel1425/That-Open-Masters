@@ -26,19 +26,18 @@ function nameInitials(name: string): string {
 
 // Class for Project
 export class Project implements IProject {
-  name: string;
-  description: string;
-  status: ProjectStatus;
-  userRole: UserRole;
-  finishDate: Date;
-  lastUpdate: Date;
-  ui: HTMLDivElement;
-  cost: number = 2500;
-  progress: number = 30;
-  id: string;
-  nameInitials: string;
-  backColor: string;
-  todos: HTMLElement;
+	id: string;
+	name: string;
+	description: string;
+	userRole: UserRole;
+	status: ProjectStatus;
+	finishDate: Date;
+	cost: number;
+	progress: number;
+	backColor: string;
+	lastUpdate: Date;
+	ui: HTMLDivElement;
+	nameInitials: string;
 
   constructor(data: IProject) {
     Object.assign(this, data); // Assigning all properties from the data to the class
