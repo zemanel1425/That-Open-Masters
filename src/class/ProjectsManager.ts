@@ -8,18 +8,21 @@ export class ProjectsManager {
   constructor(container: HTMLElement) {
     this.ui = container;
     this.newProject({
+			id: "SampleProjectId",
       name: "Sample Project",
       description: "Sample Project Description",
       status: "Active",
       userRole: "Developer",
       finishDate: new Date(),
+			cost: 2500,
+			progress: 30,
       backColor: "orange",
       lastUpdate: new Date(),
     });
   }
 
   // Method to update project details on the details page
-  updateProjectDetails(project: Project): void {
+  updateProjectDetails(project: IProject): void {
     const detailsPage = document.getElementById("project-details");
     if (!detailsPage) return;
 
