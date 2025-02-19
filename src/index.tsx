@@ -58,8 +58,14 @@ const todoManager = new ToDosManager(todosListUI);
 // -------------------------------------------PROJECTS LIST BUTTON EVENT LISTENER
 const projectBtn = document.getElementById("project-btn");
 projectBtn?.addEventListener("click", () => {
+	const project = projectsManager.getCurrentProj();
+	console.log("🚀 ~ projectBtn?.addEventListener ~ project:", project)
+	const todos = todoManager.todoList
+	console.log("🚀 ~ projectBtn?.addEventListener ~ todos:", todos)
+	
 	const projectsPage = document.getElementById("projects-page");
 	const detailsPage = document.getElementById("project-details");
+
 	if (projectsPage && detailsPage) {
 		projectsPage.style.display = "flex";
 		detailsPage.style.display = "none";
@@ -98,6 +104,13 @@ editProjectForm?.addEventListener("submit", (e) => {
 	const finishDateValue = formData.get("finishDate") as string;
 	const finishDate = finishDateValue ? new Date(finishDateValue) : new Date();
 	const progress = Number(formData.get("progress"));
+	
+	///////////////////////////////////////////////////////////
+	const project = projectsManager.getCurrentProj();
+	const todos = project?.todos as []
+	console.log("🚀 ~ editProjectForm?.addEventListener ~ todos:", todos)
+	// const projTodos = project ? todoManager.getTodoByProjId(todos, project.id) : [];
+	//////////////////////////////////////////////////////////
 	if (progress < 0 || progress > 100) {
 		displayErrorMessage("err-popup", `Progress value should be between 0 - 100.`);
 		editProjectForm["progress"].value = progress;
@@ -115,6 +128,7 @@ editProjectForm?.addEventListener("submit", (e) => {
 		progress,
 		backColor: formData.get("backcolor") as string,
 		lastUpdate: new Date(),
+		todos: todos,
 	};
 
 	projectsManager.deleteProject(projectData.id);
@@ -209,6 +223,7 @@ projectForm?.addEventListener("submit", (e) => {
 		progress: 25,
 		backColor: randomColor(),
 		lastUpdate: new Date(),
+		todos: [],
 	};
 
 	try {
@@ -233,15 +248,19 @@ todoForm?.addEventListener("submit", (e) => {
 	const formData = new FormData(todoForm);
 	const finishDateValue = formData.get("todo-finishDate") as string;
 	const finishDate = finishDateValue ? new Date(finishDateValue) : new Date();
+	const project = projectsManager.getCurrentProj()
 
 	const todoData: IToDo = {
+		id: uuidv4(),
 		description: formData.get("todo-description") as string,
 		userRole: formData.get("todo-userRole") as UserRole,
 		status: formData.get("todo-status") as TasktStatus,
 		finishDate,
+		projId: project?.id || ''
 	};
 
 	try {
+		todoManager.deleteTodo("SampleTodoId")
 		todoManager.newToDo(todoData);
 		toggleModal("new-todo-modal", false);
 		console.log("ToDo task created successfully!");
@@ -261,27 +280,30 @@ editToDoForm?.addEventListener("submit", (e) => {
 	const formData = new FormData(editToDoForm);
 	const finishDateValue = formData.get("edit-todo-finishDate") as string;
 	const finishDate = finishDateValue ? new Date(finishDateValue) : new Date();
+	const project = projectsManager.getCurrentProj()
 
 	const id = formData.get("edit-todoid") as string;
 	const todoData: IToDo = {
+		id: uuidv4() as string,
 		description: formData.get("edit-todo-description") as string,
 		userRole: formData.get("edit-todo-userRole") as UserRole,
 		status: formData.get("edit-todo-status") as TasktStatus,
 		finishDate,
+		projId: project?.id || ''
 	};
 
 	try {
 		todoManager.newToDo(todoData);
+		todoManager.deleteTodo(id)
 		toggleModal("edit-todo-modal", false);
 		console.log("ToDo task updated successfully!");
-		todoManager.deleteTodo(id);
-		editToDoForm.reset();
 	} catch (err) {
 		const description = formData.get("edit-todo-description") as string;
 		if (description.length === 0) {
 			displayErrorMessage("err-popup", `To-Do Description must not be empty`);
 		}
 	}
+		console.log("🚀 ~ editToDoForm?.addEventListener ~ todoData:", todoData)
 });
 
 // EXPORT BUTTON (PROJECTS AND TODOS)

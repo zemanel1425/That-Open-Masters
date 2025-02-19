@@ -1,4 +1,5 @@
 import { IProject, Project } from "./Project";
+import { IToDo } from "./ToDo";
 
 // Class to manage projects
 export class ProjectsManager {
@@ -18,8 +19,13 @@ export class ProjectsManager {
 			progress: 30,
       backColor: "orange",
       lastUpdate: new Date(),
+<<<<<<< HEAD
     })
 		project.ui.click() //<<<<<< delete after some time
+=======
+			todos: [],
+    });
+>>>>>>> 49b5017 (feat: add and edit todos working fine)
   }
 
   // Method to update project details on the details page
@@ -53,8 +59,8 @@ export class ProjectsManager {
     this.projList.push(project);
     return project;
   }
-
-  // Method to create a new project and ensure no duplicate project names
+  
+	// Method to create a new project and ensure no duplicate project names
   newProject(data: IProject): Project {
     if (this.projList.some((project) => project.name === data.name)) {
       throw new Error(`A project with the name '${data.name}' already exists`);
@@ -102,6 +108,9 @@ export class ProjectsManager {
     projectsPage.style.display = "none";
     detailsPage.style.display = "flex";
     this.setDetailsPage(project);
+		
+    // console.log("🚀 showProjectDetails");
+    //console.log("🚀 ~ ProjectsManager ~ showProjectDetails ~ project:", project)
   }
 
   // Get project by ID

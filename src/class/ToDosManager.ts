@@ -7,18 +7,20 @@ export class ToDosManager {
   todoList: ToDo[] = [];
   ui: HTMLElement;
   id: UUIDTypes;
-  incremental: string;
 
   // CLASS TODOS MANAGER CONSTRUCTOR
   constructor(container: HTMLElement) {
     this.ui = container;
     this.newToDo({
+			id: "SampleTodoId" as string,
       description: "Sample todo Description" as string,
-      finishDate: new Date(),
-      status: "Not Started",
       userRole: "Developer",
+      status: "Not Started",
+      finishDate: new Date(),
+			projId: "SampleProjectId",
     });
   }
+  
 
   // ---------------------------- CREATE NEW TODO METHOD ---------------------------- //
   newToDo(data: IToDo) {
@@ -57,6 +59,7 @@ export class ToDosManager {
 
       card.addEventListener("click", () => {
         const id = card.querySelector(".todo-token-id")?.textContent || "";
+        console.log("🚀 ~ ToDosManager ~ card.addEventListener ~ id:", id)
         if (id) {
           const todo = this.getTodoById(id);
           const finishDate = todo?.finishDate
@@ -70,6 +73,7 @@ export class ToDosManager {
             if (todoForm) {
 							console.log("Edit To-Do Form Loaded")
               if (todo) {
+								todoForm["edit-todoid"].value = id
                 todoForm["edit-todo-description"].value = todo.description;
                 todoForm["edit-todo-userRole"].value = todo.userRole;
                 todoForm["edit-todo-status"].value = todo.status;

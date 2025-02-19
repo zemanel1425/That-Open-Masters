@@ -8,22 +8,25 @@ export type TasktStatus = "Not Started" | "In Progress" | "Completed";
 
 // CREATE INTERFACE IToDo
 export interface IToDo {
+	id: string;
   description: string;
-  finishDate: Date;
-  status: TasktStatus;
   userRole: UserRole;
+  status: TasktStatus;
+  finishDate: Date;
+	projId: string;
 }
 
 // CREATE CLASS ToDo
 export class ToDo implements IToDo {
-  // To satisfy the interface
-  description: string;
-  status: TasktStatus;
-  userRole: UserRole;
-  finishDate: Date;
-
-  // Class internals
+	// To satisfy the interface
   id: string;
+  description: string;
+  userRole: UserRole;
+  status: TasktStatus;
+  finishDate: Date;
+	projId: string;
+	
+  // Class internals
   ui: HTMLDivElement;
 
   // CREATE CLASS CONSTRUCTOR
@@ -39,7 +42,7 @@ export class ToDo implements IToDo {
     if (this.description.length <= 0) return; // Check for empty description
 
     // Format the finish date (e.g., 'Dec 26')
-    const formattedDate = this.finishDate
+    const formattedDate = new Date (this.finishDate)
       .toDateString()
       .split(' ')
       .slice(1, 3)
