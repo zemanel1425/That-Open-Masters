@@ -1,6 +1,9 @@
 import { IProject, Project } from "./Project";
 import { IToDo } from "./ToDo";
+import { ToDosManager } from "./ToDosManager";
 
+const todosListUI = document.getElementById("todos-list") as HTMLElement;
+const todoManager = new ToDosManager(todosListUI);
 // Class to manage projects
 export class ProjectsManager {
   projList: Project[] = [];
@@ -46,11 +49,11 @@ export class ProjectsManager {
     updateElement("[data-project-info='card-date']", new Date(project.finishDate).toDateString());
     updateElement("[data-project-info='card-cost']", `$${project.cost}`);
     updateElement("[data-project-info='card-completion']", `${project.progress}%`);
-
+		
     const cardProgressBar = document.getElementById("progress-bar");
     if (cardProgressBar) cardProgressBar.style.width = `${project.progress}%`;
-  }
-
+	}
+	
   // Method to add a new project
   updateProject(data: IProject): Project {
     const project = new Project(data);
@@ -96,7 +99,27 @@ export class ProjectsManager {
 
     const cardProgressBar = document.getElementById("progress-bar");
     if (cardProgressBar) cardProgressBar.style.width = `${project.progress}%`;
+
+		todoManager.cleanToDoList()
+		
+		const todos = project.todos as []
+		todos.forEach((todo) => {
+			todoManager.newToDo(todo)
+			});
   }
+
+	removeToDo(id: string): void {
+		const project = this.getCurrentProj()
+    if (project) {
+      const todos = project.todos;
+			if (todos) {
+				const todosList = todos.findIndex(todo => todo.id === id);
+				if (todosList !== undefined && todosList !== -1) {
+					todos.splice(todosList, 1);
+				}
+			}
+    }
+	}	
 
   // Display project details page
   private showProjectDetails(project: Project): void {
@@ -109,8 +132,6 @@ export class ProjectsManager {
     detailsPage.style.display = "flex";
     this.setDetailsPage(project);
 		
-    // console.log("🚀 showProjectDetails");
-    //console.log("🚀 ~ ProjectsManager ~ showProjectDetails ~ project:", project)
   }
 
   // Get project by ID

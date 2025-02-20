@@ -21,6 +21,23 @@ export class ToDosManager {
     });
   }
   
+	// Method to clean todos list
+	cleanToDoList() {
+		const todosList = document.getElementById("todos-list");
+		if (todosList) {
+			const divs = todosList.querySelectorAll("div");
+			divs.forEach((child) => {
+				todosList.removeChild(child);
+			});
+		}
+	}
+
+	// Method to update a new todo
+	updateToDo(data: IToDo) {
+		this.todoList
+		const todo = new ToDo(data);
+		this.ui.append(todo.ui);
+	}
 
   // ---------------------------- CREATE NEW TODO METHOD ---------------------------- //
   newToDo(data: IToDo) {
@@ -34,6 +51,7 @@ export class ToDosManager {
     this.ui.append(todo.ui);
     this.todoList.push(todo);
     this.changeColorByStatus();
+		
   }
 
   // ---------------------------- CHANGE TODO COLOR BASED ON STATUS ---------------------------- //
