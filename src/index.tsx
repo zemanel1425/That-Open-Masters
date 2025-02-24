@@ -58,11 +58,6 @@ const todoManager = new ToDosManager(todosListUI);
 // -------------------------------------------PROJECTS LIST BUTTON EVENT LISTENER
 const projectBtn = document.getElementById("project-btn");
 projectBtn?.addEventListener("click", () => {
-	const project = projectsManager.getCurrentProj();
-	console.log("🚀 ~ projectBtn?.addEventListener ~ project:", project)
-	const todos = todoManager.todoList
-	console.log("🚀 ~ projectBtn?.addEventListener ~ todos:", todos)
-	
 	const projectsPage = document.getElementById("projects-page");
 	const detailsPage = document.getElementById("project-details");
 
@@ -279,7 +274,6 @@ editToDoForm?.addEventListener("submit", (e) => {
 	const finishDate = finishDateValue ? new Date(finishDateValue) : new Date();
 	const project = projectsManager.getCurrentProj();
 	const id = formData.get("edit-todoid") as string;
-	console.log("🚀 ~ editToDoForm?.addEventListener ~ id:", id)
 	
 	const todoData: IToDo = {
 		id: uuidv4() as string,
@@ -303,7 +297,6 @@ editToDoForm?.addEventListener("submit", (e) => {
 			displayErrorMessage("err-popup", `To-Do Description must not be empty`);
 		}
 	}
-		// console.log("🚀 ~ editToDoForm?.addEventListener ~ todoData:", todoData)
 });
 
 // EXPORT BUTTON (PROJECTS AND TODOS)
@@ -312,7 +305,7 @@ exportProjectBtn?.addEventListener("click", (e) => {
 	e.preventDefault();
 	const plist = projectsManager.projList;
 	const tlist = todoManager.todoList;
-	const lst = [plist, tlist];
+	const lst = [plist,[tlist]];
 	const fileName = "Combined Export";
 	const json = JSON.stringify(lst, null, 2);
 	const blob = new Blob([json], { type: 'application/json' });

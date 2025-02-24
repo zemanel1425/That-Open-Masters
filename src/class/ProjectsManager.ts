@@ -55,13 +55,19 @@ export class ProjectsManager {
 	}
 	
   // Method to add a new project
-  updateProject(data: IProject): Project {
-    const project = new Project(data);
-    project.ui.addEventListener("click", () => this.showProjectDetails(project));
-    this.ui.append(project.ui);
-    this.projList.push(project);
-    return project;
-  }
+	updateProject(data: IProject, preventDefault: boolean = false): Project {
+		const project = new Project(data);
+		project.ui.addEventListener("click", (event: MouseEvent) => {
+			if (preventDefault) {
+				event.preventDefault(); // Prevent default action if parameter is true
+			}
+			console.log("Project details page loaded");
+			this.showProjectDetails(project);
+		});
+		this.ui.append(project.ui);
+		this.projList.push(project);
+		return project;
+	}
   
 	// Method to create a new project and ensure no duplicate project names
   newProject(data: IProject): Project {
@@ -102,7 +108,7 @@ export class ProjectsManager {
 
 		todoManager.cleanToDoList()
 		
-		const todos = project.todos as []
+    const todos = project.todos as IToDo[]
 		todos.forEach((todo) => {
 			todoManager.newToDo(todo)
 			});
@@ -208,6 +214,7 @@ export class ProjectsManager {
           }
         }
       }
+			
 
       this.popupInfoMsg(this.importJSONLog(importSummary));
     });
