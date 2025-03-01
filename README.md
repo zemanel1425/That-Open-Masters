@@ -1,1 +1,1 @@
-this is the repository for the module 2 exercises
+this is the repository for Open University Code
