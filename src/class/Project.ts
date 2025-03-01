@@ -1,3 +1,4 @@
+import { IToDo } from "./ToDo";
 // Custom data types
 export type ProjectStatus = "Active" | "Inactive" | "Finished";
 export type UserRole = "Architect" | "Engineer" | "Developer";
@@ -12,8 +13,9 @@ export interface IProject {
 	finishDate: Date;
 	cost: number;
 	progress: number;
-	backColor: string;
-	lastUpdate: Date;
+  backColor: string;
+  lastUpdate: Date;
+	todos: IToDo[];
 }
 
 // Utility function to get name initials
@@ -26,18 +28,19 @@ function nameInitials(name: string): string {
 
 // Class for Project
 export class Project implements IProject {
-	id: string;
-	name: string;
-	description: string;
-	userRole: UserRole;
-	status: ProjectStatus;
-	finishDate: Date;
-	cost: number;
-	progress: number;
-	backColor: string;
-	lastUpdate: Date;
-	ui: HTMLDivElement;
-	nameInitials: string;
+  id: string;
+  name: string;
+  description: string;
+  userRole: UserRole;
+  status: ProjectStatus;
+  finishDate: Date;
+  cost: number;
+  progress: number;
+  backColor: string;
+  lastUpdate: Date;
+  todos: IToDo[];
+  ui: HTMLDivElement;
+  nameInitials: string;
 
   constructor(data: IProject) {
     Object.assign(this, data); // Assigning all properties from the data to the class

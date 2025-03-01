@@ -1,5 +1,9 @@
 import { IProject, Project } from "./Project";
+import { IToDo } from "./ToDo";
+import { ToDosManager } from "./ToDosManager";
 
+const todosListUI = document.getElementById("todos-list") as HTMLElement;
+const todoManager = new ToDosManager(todosListUI);
 // Class to manage projects
 export class ProjectsManager {
   projList: Project[] = [];
@@ -7,7 +11,7 @@ export class ProjectsManager {
 
   constructor(container: HTMLElement) {
     this.ui = container;
-    const project = this.newProject({
+    this.newProject({
 			id: "SampleProjectId",
       name: "Sample Project",
       description: "Sample Project Description",
@@ -18,8 +22,8 @@ export class ProjectsManager {
 			progress: 30,
       backColor: "orange",
       lastUpdate: new Date(),
-    })
-		project.ui.click() //<<<<<< delete after some time
+			todos: [],
+    });
   }
 
   // Method to update project details on the details page
@@ -40,21 +44,27 @@ export class ProjectsManager {
     updateElement("[data-project-info='card-date']", new Date(project.finishDate).toDateString());
     updateElement("[data-project-info='card-cost']", `$${project.cost}`);
     updateElement("[data-project-info='card-completion']", `${project.progress}%`);
-
+		
     const cardProgressBar = document.getElementById("progress-bar");
     if (cardProgressBar) cardProgressBar.style.width = `${project.progress}%`;
-  }
-
+	}
+	
   // Method to add a new project
-  updateProject(data: IProject): Project {
-    const project = new Project(data);
-    project.ui.addEventListener("click", () => this.showProjectDetails(project));
-    this.ui.append(project.ui);
-    this.projList.push(project);
-    return project;
-  }
-
-  // Method to create a new project and ensure no duplicate project names
+	updateProject(data: IProject, preventDefault: boolean = false): Project {
+		const project = new Project(data);
+		project.ui.addEventListener("click", (event: MouseEvent) => {
+			if (preventDefault) {
+				event.preventDefault(); // Prevent default action if parameter is true
+			}
+			console.log("Project details page loaded");
+			this.showProjectDetails(project);
+		});
+		this.ui.append(project.ui);
+		this.projList.push(project);
+		return project;
+	}
+  
+	// Method to create a new project and ensure no duplicate project names
   newProject(data: IProject): Project {
     if (this.projList.some((project) => project.name === data.name)) {
       throw new Error(`A project with the name '${data.name}' already exists`);
@@ -90,7 +100,27 @@ export class ProjectsManager {
 
     const cardProgressBar = document.getElementById("progress-bar");
     if (cardProgressBar) cardProgressBar.style.width = `${project.progress}%`;
+
+		todoManager.cleanToDoList()
+		
+    const todos = project.todos as IToDo[]
+		todos.forEach((todo) => {
+			todoManager.newToDo(todo)
+			});
   }
+
+	removeToDo(id: string): void {
+		const project = this.getCurrentProj()
+    if (project) {
+      const todos = project.todos;
+			if (todos) {
+				const todosList = todos.findIndex(todo => todo.id === id);
+				if (todosList !== undefined && todosList !== -1) {
+					todos.splice(todosList, 1);
+				}
+			}
+    }
+	}	
 
   // Display project details page
   private showProjectDetails(project: Project): void {
@@ -102,6 +132,7 @@ export class ProjectsManager {
     projectsPage.style.display = "none";
     detailsPage.style.display = "flex";
     this.setDetailsPage(project);
+		
   }
 
   // Get project by ID
@@ -178,6 +209,7 @@ export class ProjectsManager {
           }
         }
       }
+			
 
       this.popupInfoMsg(this.importJSONLog(importSummary));
     });

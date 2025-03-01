@@ -7,31 +7,52 @@ export class ToDosManager {
   todoList: ToDo[] = [];
   ui: HTMLElement;
   id: UUIDTypes;
-  incremental: string;
 
   // CLASS TODOS MANAGER CONSTRUCTOR
   constructor(container: HTMLElement) {
     this.ui = container;
     this.newToDo({
+			id: "SampleTodoId" as string,
       description: "Sample todo Description" as string,
-      finishDate: new Date(),
-      status: "Not Started",
       userRole: "Developer",
+      status: "Not Started",
+      finishDate: new Date(),
+			projId: "SampleProjectId",
     });
   }
+  
+	// Method to clean todos list
+	cleanToDoList() {
+		const todosList = document.getElementById("todos-list");
+		if (todosList) {
+			const divs = todosList.querySelectorAll("div");
+			divs.forEach((child) => {
+				todosList.removeChild(child);
+			});
+		}
+	}
+	
+	cleanToDoUi(id: string) {
+		const todo = this.getTodoById(id);
+		if (todo) {
+			todo.ui.remove();
+		}
+	}
 
-  // ---------------------------- CREATE NEW TODO METHOD ---------------------------- //
-  newToDo(data: IToDo) {
-    const todo = new ToDo(data);
+		// ---------------------------- CREATE NEW TODO METHOD ---------------------------- //
+  newToDo(data: IToDo): ToDo {
+		const todo = new ToDo(data);
     todo.ui.addEventListener("click", () => {
-      const todoCard = document.getElementById("todo-card");
+			const todoCard = document.getElementById("todo-card");
       if (todoCard) {
-        todoCard.style.display = "block";
+				todoCard.style.display = "block";
       }
     });
     this.ui.append(todo.ui);
     this.todoList.push(todo);
     this.changeColorByStatus();
+		this.editToDo()
+		return todo;
   }
 
   // ---------------------------- CHANGE TODO COLOR BASED ON STATUS ---------------------------- //
@@ -54,31 +75,42 @@ export class ToDosManager {
           (dateElement as HTMLElement).style.backgroundColor = "green";
         }
       }
+		})
+		}
 
-      card.addEventListener("click", () => {
+  // ---------------------------- EDIT TODO METHOD ---------------------------- //
+  editToDo() {
+    const todoCards = document.querySelectorAll(".todo-card");
+    todoCards.forEach((card) => {
+      card.addEventListener("click", (e) => {
+				e.preventDefault();
         const id = card.querySelector(".todo-token-id")?.textContent || "";
         if (id) {
-          const todo = this.getTodoById(id);
-          const finishDate = todo?.finishDate
-            ? new Date(todo.finishDate).toISOString().split("T")[0]
-            : "";
+					const newTodo = this.getTodoById(id);
+          if (card) {
+					}
+          const finishDate = newTodo?.finishDate
+					? new Date(newTodo.finishDate).toISOString().split("T")[0]
+					: "";
           const todoModal = document.getElementById("edit-todo-modal");
           const todoForm = document.getElementById("edit-todo-form");
-
+					
           if (todoModal && todoModal instanceof HTMLDialogElement) {
-            todoModal.showModal();
+						todoModal.showModal();
             if (todoForm) {
 							console.log("Edit To-Do Form Loaded")
-              if (todo) {
-                todoForm["edit-todo-description"].value = todo.description;
-                todoForm["edit-todo-userRole"].value = todo.userRole;
-                todoForm["edit-todo-status"].value = todo.status;
+              if (newTodo) {
+								todoForm["edit-todoid"].value = id
+                todoForm["edit-todo-description"].value = newTodo.description;
+                todoForm["edit-todo-userRole"].value = newTodo.userRole;
+                todoForm["edit-todo-status"].value = newTodo.status;
                 todoForm["edit-todo-finishDate"].value = finishDate;
-                todoForm["edit-todoid"].value = todo.id;
+                todoForm["edit-todoid"].value = newTodo.id;
               }
             }
-          }
+					}
         }
+				this.cleanToDoUi(id);
       });
     });
   }
