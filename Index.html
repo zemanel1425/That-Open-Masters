@@ -8,8 +8,15 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+	
 	<!--SIDEBAR-->
-	<div id="app"></div>
+  <aside id="sidebar">
+		<img id="company-logo" src="./Assets/company-logo.svg" alt="Construction Company">
+    <ul id="nav-buttons">
+			<li id="project-btn"><span class="material-icons-round">apartment</span>Projects</li>
+      <li><span class="material-icons-round">people</span>User</li>
+    </ul>
+  </aside>
 	<!--ERROR MESSAGE POPUP-->
 	<dialog class="popup" role="alert" id="err-popup" >
 		<div style="border-radius: 10px; padding: 10px;">
@@ -276,12 +283,12 @@
 						</div>
 					</div>
 				</div>
-				<div id="viewer-container" class="viewer-container" style="min-width: 0;
-				border-radius: 5px; background-color: var(--background-100) ;"></div>
+				<div class="viewer-container" style="display:flex; flex-direction: column;	row-gap: 30px; border: 5px solid var(--background-100); width: 100%">MODEL VIEWER SPACE
+				</div>
 			</div>
 		</div>
 	</main>
-	<script type="module" src="./src/index.tsx"></script>
+	<script type="module" src="./src/index.ts"></script>
 	<!-- type module indicates that the project is using various files or es6 modules -->
 	<!-- src indicates the file this html references to in order to perform dinamic operations -->
 </body>

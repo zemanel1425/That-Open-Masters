@@ -15,6 +15,7 @@ export interface IProject {
 	progress: number;
   backColor: string;
   lastUpdate: Date;
+	todos: IToDo[];
 }
 
 // Utility function to get name initials
@@ -37,9 +38,9 @@ export class Project implements IProject {
   progress: number;
   backColor: string;
   lastUpdate: Date;
+  todos: IToDo[];
   ui: HTMLDivElement;
   nameInitials: string;
-  todos: HTMLElement;
 
   constructor(data: IProject) {
     Object.assign(this, data); // Assigning all properties from the data to the class

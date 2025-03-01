@@ -11,7 +11,7 @@ export class ProjectsManager {
 
   constructor(container: HTMLElement) {
     this.ui = container;
-    const project = this.newProject({
+    this.newProject({
 			id: "SampleProjectId",
       name: "Sample Project",
       description: "Sample Project Description",
@@ -22,13 +22,8 @@ export class ProjectsManager {
 			progress: 30,
       backColor: "orange",
       lastUpdate: new Date(),
-<<<<<<< HEAD
-    })
-		project.ui.click() //<<<<<< delete after some time
-=======
 			todos: [],
     });
->>>>>>> 49b5017 (feat: add and edit todos working fine)
   }
 
   // Method to update project details on the details page

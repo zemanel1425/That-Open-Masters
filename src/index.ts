@@ -1,27 +1,10 @@
-//---------THE PURPOSE OF THIS FILE IS TO INTERACT WITH THE DOM AND TO HANDLE EVENTS----------//
 import { v4 as uuidv4 } from "uuid";
-import * as React from "react"
-import * as ReactDOM from "react-dom/client"
-import { Sidebar } from "./react-components/Sidebar"
-import * as THREE from "three"
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js"
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"
-import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js"
-import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader.js"
 import { IProject, Project, ProjectStatus, UserRole } from "./class/Project";
 import { ProjectsManager } from "./class/ProjectsManager";
 import { IToDo, TasktStatus, ToDo } from "./class/ToDo";
 import { ToDosManager } from "./class/ToDosManager";
-import { ThreeMFLoader } from "three/examples/jsm/loaders/3MFLoader.js"
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"
 
-const rootElement = document.getElementById("app") as HTMLDivElement
-const appRoot = ReactDOM.createRoot(rootElement)
-appRoot.render(
-	<Sidebar />
-)
-
-// TOGGLE MODAL FUNCTION
+// Toggle Modal Function
 function toggleModal(id: string, show: boolean) {
 	const modal = document.getElementById(id);
 	if (modal && modal instanceof HTMLDialogElement) {
@@ -31,7 +14,7 @@ function toggleModal(id: string, show: boolean) {
 	}
 }
 
-// DISPLAY ERROR MESSAGE FUNCTION
+// Display Error Message Function
 function displayErrorMessage(id: string, message: string) {
 	const errorContainer = document.getElementById("error-container");
 	const popupErrMsg = document.getElementById(id) as HTMLDialogElement;
@@ -49,13 +32,13 @@ function displayErrorMessage(id: string, message: string) {
 	}
 }
 
-// CONSTANT PROJECTSLISTUI
+// Constants for UI Elements
 const projectsListUI = document.getElementById("projects-list") as HTMLElement;
 const todosListUI = document.getElementById("todos-list") as HTMLElement;
 const projectsManager = new ProjectsManager(projectsListUI);
 const todoManager = new ToDosManager(todosListUI);
 
-// -------------------------------------------PROJECTS LIST BUTTON EVENT LISTENER
+// Project List Button Event Listener
 const projectBtn = document.getElementById("project-btn");
 projectBtn?.addEventListener("click", () => {
 	const projectsPage = document.getElementById("projects-page");
@@ -68,7 +51,7 @@ projectBtn?.addEventListener("click", () => {
 	}
 });
 
-// EDIT PROJECT BUTTON EVENT LISTENER
+// Edit Project Button Event Listener
 const btnEditProject = document.getElementById("btn-edit-project");
 btnEditProject?.addEventListener("click", () => {
 	console.log("Edit Project Form Loaded");
@@ -91,7 +74,7 @@ btnEditProject?.addEventListener("click", () => {
 	}
 });
 
-	// EDIT PROJECT FORM EVENT LISTENER
+// Edit Project Form Event Listener
 const editProjectForm = document.getElementById("edit-project-form") as HTMLFormElement;
 editProjectForm?.addEventListener("submit", (e) => {
 	e.preventDefault();
@@ -134,7 +117,7 @@ editProjectForm?.addEventListener("submit", (e) => {
 	}
 });
 
-//----------------------NEW TODO BUTTON EVENT LISTENER----------------------//
+// New To-Do Button Event Listener
 const newTodoBtn = document.getElementById("add-todo-btn");
 newTodoBtn?.addEventListener("click", (e) => {
 	e.preventDefault();
@@ -142,7 +125,7 @@ newTodoBtn?.addEventListener("click", (e) => {
 	toggleModal("new-todo-modal", true);
 });
 
-// NEW PROJECT BUTTON EVENT LISTENER
+// New Project Button Event Listener
 const newProjectBtn = document.getElementById("btn-new-project");
 const randomColor = () => {
 	const colors = ["#42f54e", "#177a29", "#2f3d7f", "#946a26", "#8236a3", "#ad3e31"];
@@ -155,21 +138,21 @@ newProjectBtn?.addEventListener("click", (e) => {
 	toggleModal("new-project-modal", true);
 });
 
-// NEW PROJECT CANCEL BUTTON EVENT LISTENER
+// New Project Cancel Button Event Listener
 const newCancelBtn = document.getElementById("cancelbutton");
 newCancelBtn?.addEventListener("click", () => {
 	console.log("New Project Creation Cancelled");
 	toggleModal("new-project-modal", false);
 });
 
-// EDIT PROJECT CANCEL BUTTON EVENT LISTENER
+// Edit Project Cancel Button Event Listener
 const editCancelBtn = document.getElementById("editcancelbutton");
 editCancelBtn?.addEventListener("click", () => {
 	toggleModal("edit-project-modal", false);
 	console.log("Project Edition Cancelled");
 });
 
-// NEW TODO CANCEL BUTTON EVENT LISTENER
+// New To-Do Cancel Button Event Listener
 const todoCancelBtn = document.getElementById("todocancelbutton");
 todoCancelBtn?.addEventListener("click", () => {
 	const newToDoForm = document.getElementById("new-todo-form") as HTMLFormElement;
@@ -197,13 +180,10 @@ todoCancelBtn?.addEventListener("click", () => {
 	}
 	}
 	console.log("ToDo Task Edition Cancelled");
-	toggleModal("edit-todo-modal", false);
-	console.log(newTodo)
-	console.log(todoManager.todoList)
 	editToDoForm.dispatchEvent(new Event("submit",));
 	});
 
-// CLOSE POP UP ERROR MESSAGES BUTTON
+// Close Popup Error Messages Button
 const closePopupBtn = document.getElementById("close-popup-btn");
 const popupErrMsg = document.getElementById("err-popup");
 closePopupBtn?.addEventListener("click", () => {
@@ -215,7 +195,7 @@ closePopupBtn?.addEventListener("click", () => {
 	}
 });
 
-// NEW PROJECT FORM EVENT LISTENER
+// New Project Form Event Listener
 const projectForm = document.getElementById("new-project-form") as HTMLFormElement;
 projectForm?.addEventListener("submit", (e) => {
 	e.preventDefault();
@@ -252,7 +232,7 @@ projectForm?.addEventListener("submit", (e) => {
 	}
 });
 
-// --------------------------NEW TODO FORM EVENT LISTENER
+// New To-Do Form Event Listener
 const todoForm = document.getElementById("new-todo-form") as HTMLFormElement;
 todoForm?.addEventListener("submit", (e) => {
 	e.preventDefault();
@@ -285,7 +265,7 @@ todoForm?.addEventListener("submit", (e) => {
 	}
 });
 
-// --------------------------EDIT TODO FORM EVENT LISTENER
+// Edit To-Do Form Event Listener
 const editToDoForm = document.getElementById("edit-todo-form") as HTMLFormElement;
 editToDoForm?.addEventListener("submit", (e) => {
 	e.preventDefault();
@@ -319,7 +299,7 @@ editToDoForm?.addEventListener("submit", (e) => {
 	}
 });
 
-// EXPORT BUTTON (PROJECTS AND TODOS)
+// Export Projects and ToDos Button
 const exportProjectBtn = document.getElementById("export-projects-btn");
 exportProjectBtn?.addEventListener("click", (e) => {
 	e.preventDefault();
@@ -337,124 +317,9 @@ exportProjectBtn?.addEventListener("click", (e) => {
 	URL.revokeObjectURL(url);
 });
 
-// IMPORT PROJECTS BUTTON
+// Import Projects Button
 const importProjectsBtn = document.getElementById("import-projects-btn");
 importProjectsBtn?.addEventListener("click", (e) => {
 	e.preventDefault();
 	projectsManager.importFromJSON();
 });
-
-//ThreeJS viewer
-const scene = new THREE.Scene()
-
-//viewer container
-const viewerContainer = document.getElementById("viewer-container") as HTMLElement
-const camera = new THREE.PerspectiveCamera(75)
-camera.position.z = 5
-//renderer
-const renderer = new THREE.WebGLRenderer({alpha: true, antialias: true})
-viewerContainer.append(renderer.domElement)
-
-function resizeViewer () {
-	const containerDimensions = viewerContainer.getBoundingClientRect() //new dimensions of the viewer
-	renderer.setSize(containerDimensions.width, containerDimensions.height) // resize renderer based on new viewer size
-	const aspectRatio = containerDimensions.width/containerDimensions.height // new aspect ratio calculation
-	camera.aspect = aspectRatio // new aspect ratio applied
-	camera.updateProjectionMatrix() // update the camera computation. must be called after everychange so the mesh keeps proportions
-}
-
-window.addEventListener("resize", resizeViewer)
-
-resizeViewer()
-
-//mesh
-const boxGeometry = new THREE.BoxGeometry()
-const material = new THREE.MeshPhongMaterial()
-const cube = new THREE.Mesh(boxGeometry, material)
-//lights
-const directionalLight = new THREE.DirectionalLight() // like sun light
-const spotLight = new THREE.SpotLight()
-const ambientLight = new THREE.AmbientLight() // indirect light
-ambientLight.intensity = 1
-
-// scene
-scene.add(cube, directionalLight, ambientLight, spotLight)
-
-const cameraControls = new OrbitControls(camera, viewerContainer)
-
-function renderScene() {
-	renderer.render(scene, camera)
-	requestAnimationFrame(renderScene)	// requestAnimationFrame is a method of the object window!!!
-}
-
-renderScene()
-
-// grid helper
-const axes = new THREE.AxesHelper(5)
-const grid = new THREE.GridHelper()
-grid.material.transparent = true
-grid.material.opacity = 0.4
-grid.material.color = new THREE.Color("#808080")
-scene.add(axes, grid)
-
-// lightcontrols helper
-// const helper = new THREE.SpotLightHelper(spotLight)
-// scene.add(helper)
-spotLight.lookAt(-1,20,-3);
-
-// helpers display ui
-const gui = new GUI()
-
-// helpers folder
-const cogControls = gui.addFolder("cog")
-const cubeControls = gui.addFolder("cube")
-const lightControls = gui.addFolder("lights")
-cubeControls.add(cube.position, "x", -10, 10, 1)
-cubeControls.add(cube.position, "y", -10, 10, 1)
-cubeControls.add(cube.position, "z", -10, 10, 1)
-cubeControls.add(cube, "visible")
-cubeControls.addColor(cube.material, "color")
-lightControls.add(directionalLight.position, "x", -50, 50, 0.2)
-lightControls.add(directionalLight.position, "y", -50, 50, 0.2)
-lightControls.add(directionalLight.position, "z", -50, 50, 0.2)
-lightControls.add(directionalLight, "intensity", 0, 2, 0.1)
-lightControls.addColor(directionalLight, "color")
-lightControls.add(directionalLight, "visible")
-lightControls.add(spotLight, 'intensity', 0, 10, 0.0001)
-lightControls.add(spotLight, 'distance', 0, 10, 0.0001)
-lightControls.add(spotLight, 'decay', 0, 4, 0.1)
-lightControls.add(spotLight, 'angle', 0, 1, 0.1)
-lightControls.add(spotLight, 'penumbra', 0, 1, 0.1)
-lightControls.add(spotLight.position, 'x', -10, 10, 0.0001)
-lightControls.add(spotLight.position, 'y', -10, 10, 0.0001)
-lightControls.add(spotLight.position, 'z', -10, 10, 0.0001)
-lightControls.add(spotLight, "visible")
-
-
-// define obj mesh file and material file
-const objLoader = new OBJLoader()
-const mtlLoader = new MTLLoader()
-
-// load obj mesh file
-mtlLoader.load("../Assets/Gear/Gear1.mtl", (materials) => {
-	materials.preload()
-	objLoader.setMaterials(materials)
-	objLoader.load("../Assets/Gear/Gear1.obj", (mesh) => {
-		scene.add(mesh)
-		mesh.scale.set(.25,.25,.25)
-		cogControls.add(mesh.position, "x", -10, 10, .1)
-		cogControls.add(mesh.position, "y", -10, 10, .1)
-		cogControls.add(mesh.position, "z", -10, 10, .1)
-		cogControls.add(mesh, 'visible')
-	})
-})
-// define gltf mesh file
-const gltfloader = new GLTFLoader
-
-//load glft mesh file
-gltfloader.load("../Assets/gltf/scene.gltf", (gltf) => {
-	gltf.scene.scale.set(.005*gltf.scene.scale.x, .005*gltf.scene.scale.y, .005 * gltf.scene.scale.z)
-
-	scene.add(gltf.scene)
-	
-	})
