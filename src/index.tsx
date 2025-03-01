@@ -172,16 +172,36 @@ editCancelBtn?.addEventListener("click", () => {
 // NEW TODO CANCEL BUTTON EVENT LISTENER
 const todoCancelBtn = document.getElementById("todocancelbutton");
 todoCancelBtn?.addEventListener("click", () => {
+	const newToDoForm = document.getElementById("new-todo-form") as HTMLFormElement;
+	newToDoForm.reset();
 	toggleModal("new-todo-modal", false);
 	console.log("New ToDo Task Addition Cancelled");
 });
 
-// EDIT TODO CANCEL BUTTON EVENT LISTENER
-const editToDoCancelBtn = document.getElementById("edittodocancelbutton");
-editToDoCancelBtn?.addEventListener("click", () => {
-	toggleModal("edit-todo-modal", false);
+// Edit To-Do Cancel Button Event Listener
+	const editToDoCancelBtn = document.getElementById("edittodocancelbutton");
+	editToDoCancelBtn?.addEventListener("click", () => {
+	const todoForm = document.getElementById("edit-todo-form") as HTMLFormElement;
+	const formData = new FormData(editToDoForm);
+	const id = formData.get("edit-todoid") as string;
+	const newTodo = todoManager.getTodoById(id);
+	if (newTodo) {
+	if (todoForm) {
+	console.log("Edit To-Do Form Loaded")
+	todoForm["edit-todoid"].value = id
+	todoForm["edit-todo-description"].value = newTodo.description;
+	todoForm["edit-todo-userRole"].value = newTodo.userRole;
+	todoForm["edit-todo-status"].value = newTodo.status;
+	todoForm["edit-todo-finishDate"].value = new Date(newTodo.finishDate).toISOString().split('T')[0];
+	todoForm["edit-todoid"].value = newTodo.id;
+	}
+	}
 	console.log("ToDo Task Edition Cancelled");
-});
+	toggleModal("edit-todo-modal", false);
+	console.log(newTodo)
+	console.log(todoManager.todoList)
+	editToDoForm.dispatchEvent(new Event("submit",));
+	});
 
 // CLOSE POP UP ERROR MESSAGES BUTTON
 const closePopupBtn = document.getElementById("close-popup-btn");
@@ -243,7 +263,7 @@ todoForm?.addEventListener("submit", (e) => {
 
 	const todoData: IToDo = {
 		id: uuidv4(),
-		description: project?.name || '', //formData.get("todo-description") as string,
+		description: formData.get("todo-description") as string,
 		userRole: formData.get("todo-userRole") as UserRole,
 		status: formData.get("todo-status") as TasktStatus,
 		finishDate,

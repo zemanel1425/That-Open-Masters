@@ -33,23 +33,14 @@ export class ToDosManager {
 	}
 	
 	cleanToDoUi(id: string) {
-		// const todosList = document.getElementById("todos-list");
 		const todo = this.getTodoById(id);
 		if (todo) {
 			todo.ui.remove();
 		}
 	}
-	
-	// Method to update a new todo
-	updateToDo(data: IToDo) {
-		// const todo = new ToDo(data);
-		// if (!todo) return;
-		// this.ui.replaceChildren(todo.ui);
 
-	}
-	
-  // ---------------------------- CREATE NEW TODO METHOD ---------------------------- //
-  newToDo(data: IToDo) {
+		// ---------------------------- CREATE NEW TODO METHOD ---------------------------- //
+  newToDo(data: IToDo): ToDo {
 		const todo = new ToDo(data);
     todo.ui.addEventListener("click", () => {
 			const todoCard = document.getElementById("todo-card");
@@ -61,6 +52,7 @@ export class ToDosManager {
     this.todoList.push(todo);
     this.changeColorByStatus();
 		this.editToDo()
+		return todo;
   }
 
   // ---------------------------- CHANGE TODO COLOR BASED ON STATUS ---------------------------- //
@@ -94,8 +86,7 @@ export class ToDosManager {
 				e.preventDefault();
         const id = card.querySelector(".todo-token-id")?.textContent || "";
         if (id) {
-          const newTodo = this.getTodoById(id);
-					this.cleanToDoUi(id);
+					const newTodo = this.getTodoById(id);
           if (card) {
 					}
           const finishDate = newTodo?.finishDate
@@ -117,8 +108,9 @@ export class ToDosManager {
                 todoForm["edit-todoid"].value = newTodo.id;
               }
             }
-          }
+					}
         }
+				this.cleanToDoUi(id);
       });
     });
   }
